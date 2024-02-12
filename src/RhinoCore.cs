@@ -53,7 +53,7 @@ namespace Rhino.Testing
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void ConfigureRhino()
         {
             Action m = () =>
@@ -66,7 +66,7 @@ namespace Rhino.Testing
             return;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void LoadCore()
         {
 #if NET7_0_OR_GREATER
@@ -88,14 +88,14 @@ namespace Rhino.Testing
             Rhino.Runtime.HostUtils.InitializeRhinoCommon_RDK();
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void LoadEto()
         {
             Eto.Platform.AllowReinitialize = true;
             Eto.Platform.Initialize(Eto.Platforms.Wpf);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void LoadGrasshopper()
         {
             string ghPlugin = Path.Combine(s_systemDirectory, @"Plug-ins\Grasshopper", "GrasshopperPlugin.rhp");
@@ -108,7 +108,7 @@ namespace Rhino.Testing
                 TestContext.WriteLine("Failed loading grasshopper (Headless)");
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void DisposeCore()
         {
             s_inRhino = false;

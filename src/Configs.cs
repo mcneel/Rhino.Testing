@@ -8,11 +8,6 @@ namespace Rhino.Testing
 {
     public sealed class Configs
     {
-#if DEBUG
-        const string CONFIGURATION = "Debug";
-#else
-        const string CONFIGURATION = "Release";
-#endif
         static readonly Assembly s_assembly = typeof(Configs).Assembly;
         static readonly string s_settingsFileName = $"{s_assembly.GetName().Name}.Configs.xml";
         readonly XDocument _xml;
@@ -55,12 +50,6 @@ namespace Rhino.Testing
                 _xml = XDocument.Load(SettingsFile);
                 RhinoSystemDir = _xml.Descendants("RhinoSystemDirectory").FirstOrDefault()?.Value ?? null;
 
-                RhinoSystemDir = RhinoSystemDir.Replace("$(Configuration)", CONFIGURATION
-#if NET7_0_OR_GREATER
-                , StringComparison.OrdinalIgnoreCase);
-#else
-                );
-#endif
                 if (!Path.IsPathRooted(RhinoSystemDir))
                 {
                     RhinoSystemDir = Path.GetFullPath(Path.Combine(SettingsDir, RhinoSystemDir));
