@@ -34,7 +34,7 @@ namespace Rhino.Testing
 
             object v = _xml.Descendants(name).FirstOrDefault()?.Value;
 
-            if (!(v is null)
+            if (v is not null
                     && typeof(T).IsAssignableFrom(v.GetType()))
             {
                 value = (T)v;
@@ -55,12 +55,20 @@ namespace Rhino.Testing
                 _xml = XDocument.Load(SettingsFile);
                 RhinoSystemDir = _xml.Descendants("RhinoSystemDirectory").FirstOrDefault()?.Value ?? null;
 
-                RhinoSystemDir = RhinoSystemDir.Replace("$(Configuration)", CONFIGURATION);
-
+                RhinoSystemDir = RhinoSystemDir.Replace("$(Configuration)", CONFIGURATION
+#if NET7_0_OR_GREATER
+                , StringComparison.OrdinalIgnoreCase);
+#else
+                );
+#endif
                 if (!Path.IsPathRooted(RhinoSystemDir))
                 {
                     RhinoSystemDir = Path.GetFullPath(Path.Combine(SettingsDir, RhinoSystemDir));
                 }
+            }
+            else
+            {
+                throw new FileLoadException($"Can not find {typeof(Configs).Assembly.GetName().Name}.Configs.xml configuration file");
             }
         }
     }

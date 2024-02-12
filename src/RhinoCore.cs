@@ -16,7 +16,7 @@ namespace Rhino.Testing
     {
         static string s_systemDirectory;
         static IDisposable s_core;
-        static bool s_inRhino = false;
+        static bool s_inRhino;
 
         public static void Initialize()
         {
@@ -24,7 +24,7 @@ namespace Rhino.Testing
             {
                 s_systemDirectory = Configs.Current.RhinoSystemDir;
 
-                s_inRhino = Process.GetCurrentProcess().ProcessName.Equals("Rhino");
+                s_inRhino = Process.GetCurrentProcess().ProcessName.Equals("Rhino", StringComparison.OrdinalIgnoreCase);
                 if (s_inRhino)
                 {
                     TestContext.WriteLine("Configuring rhino process");
@@ -47,7 +47,7 @@ namespace Rhino.Testing
 
         public static void TearDown()
         {
-            if (s_core is IDisposable)
+            if (s_core is not null)
             {
                 DisposeCore();
             }
