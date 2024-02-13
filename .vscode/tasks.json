@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Rhino.Testing",
+            "type": "shell",
+            "osx": {
+                "command": "time",
+                "args": [
+                    "dotnet",
+                    "build",
+                    "/v:Minimal",
+                    "/p:GenerateFullPaths=true",
+                    "/p:Configuration=${input:configuration}",
+                    "/consoleLoggerParameters:NoSummary",
+                    "${workspaceFolder}/Rhino.Testing.sln"
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "clear": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "configuration",
+            "description": "Build Configuration (press escape to continue without building)",
+            "options": [
+                "Debug",
+                "Release",
+            ],
+            "default": "Debug"
+        }
+    ]
+}
