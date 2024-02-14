@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net7.0;net7.0-windows;</TargetFrameworks>
     <Nullable>disable</Nullable>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -15,7 +15,7 @@
     <UseWpf>true</UseWpf>
     <UseWinForms>true</UseWinForms>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <RootNamespace>Rhino.Testing</RootNamespace>
     <AssemblyName>Rhino.Testing</AssemblyName>
