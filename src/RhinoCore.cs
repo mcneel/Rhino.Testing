@@ -98,8 +98,7 @@ namespace Rhino.Testing
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         static void LoadGrasshopper()
         {
-            string ghPlugin = Path.Combine(s_systemDirectory, @"Plug-ins\Grasshopper", "GrasshopperPlugin.rhp");
-            Rhino.PlugIns.PlugIn.LoadPlugIn(ghPlugin, out Guid _);
+            Rhino.PlugIns.PlugIn.LoadPlugIn(GetRHPPath(@"Grasshopper\GrasshopperPlugin.rhp"), out Guid _);
 
             object ghObj = Rhino.RhinoApp.GetPlugInObject("Grasshopper");
             if (ghObj?.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
@@ -143,6 +142,23 @@ namespace Rhino.Testing
 
             TestContext.WriteLine($"Could not find assembly {name}");
             return null;
+        }
+
+        static string GetRHPPath(string rhpName)
+        {
+            string rhp = Path.Combine(s_systemDirectory, "Plug-ins", rhpName);
+            if (File.Exists(rhp))
+            {
+                return rhp;
+            }
+
+            rhp = Path.Combine(Path.GetDirectoryName(s_systemDirectory), "Plug-ins", rhpName);
+            if (File.Exists(rhp))
+            {
+                return rhp;
+            }
+
+            throw new FileNotFoundException(rhpName);
         }
     }
 }
