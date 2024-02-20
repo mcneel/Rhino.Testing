@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
+using System.Collections.Concurrent;
 
 using NUnit.Framework;
 
@@ -14,112 +14,61 @@ namespace Rhino.Testing
     // https://github.com/nunit/nunit3-vs-adapter/blob/master/src/NUnitTestAdapter/AdapterSettings.cs#L143
     static class RhinoCore
     {
-        static string s_systemDirectory;
-        static IDisposable s_core;
+        static bool s_initd;
         static bool s_inRhino;
 
         public static void Initialize()
         {
-            if (s_core is null)
+            if (s_initd)
             {
-                s_systemDirectory = Configs.Current.RhinoSystemDir;
-
-                s_inRhino = Process.GetCurrentProcess().ProcessName.Equals("Rhino", StringComparison.OrdinalIgnoreCase);
-                if (s_inRhino)
-                {
-                    TestContext.WriteLine("Configuring rhino process");
-                    ConfigureRhino();
-                    return;
-                }
-
-                AppDomain.CurrentDomain.AssemblyResolve += ResolveForRhinoAssemblies;
-
-                TestContext.WriteLine("Loading rhino core");
-                LoadCore();
-
-                TestContext.WriteLine("Loading eto platform");
-                LoadEto();
-
-                TestContext.WriteLine("Loading grasshopper");
-                LoadGrasshopper();
+                return;
             }
+
+            s_inRhino = Process.GetCurrentProcess().ProcessName.Equals("Rhino", StringComparison.OrdinalIgnoreCase);
+            if (s_inRhino)
+            {
+                TestContext.WriteLine("Configuring rhino process");
+                PluginLoader.LoadGrasshopperInRhino();
+                s_initd = true;
+                return;
+            }
+
+            InitNativeResolver();
+            AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
+
+            TestContext.WriteLine("Loading rhino core");
+            RhinoCoreLoader.LoadCore();
+
+            TestContext.WriteLine("Loading eto platform");
+            RhinoCoreLoader.LoadEto();
+
+            TestContext.WriteLine("Loading grasshopper");
+            PluginLoader.LoadGrasshopper();
+
+            s_initd = true;
         }
 
         public static void TearDown()
         {
-            if (s_core is not null)
-            {
-                DisposeCore();
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        static void ConfigureRhino()
-        {
-            Action m = () =>
-            {
-                TestContext.WriteLine("Loading grasshopper");
-                LoadGrasshopper();
-            };
-
-            Rhino.RhinoApp.InvokeOnUiThread(m);
-            return;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        static void LoadCore()
-        {
-#if NET7_0_OR_GREATER
-            string[] args = new string[] { "/netcore " };
-#else
-            string[] args = new string[] { "/netfx " };
-#endif
-
-            s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        static void LoadEto()
-        {
-            Eto.Platform.AllowReinitialize = true;
-            Eto.Platform.Initialize(Eto.Platforms.Wpf);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        static void LoadGrasshopper()
-        {
-            Rhino.PlugIns.PlugIn.LoadPlugIn(GetRHPPath(@"Grasshopper\GrasshopperPlugin.rhp"), out Guid _);
-
-            object ghObj = Rhino.RhinoApp.GetPlugInObject("Grasshopper");
-            if (ghObj?.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
-                runHeadLess.Invoke(ghObj, null);
-            else
-                TestContext.WriteLine("Failed loading grasshopper (Headless)");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        static void DisposeCore()
-        {
+            RhinoCoreLoader.DisposeCore();
             s_inRhino = false;
-
-            ((Rhino.Runtime.InProcess.RhinoCore)s_core).Dispose();
-            s_core = null;
+            s_initd = false;
         }
 
-        static Assembly ResolveForRhinoAssemblies(object sender, ResolveEventArgs args)
+        static Assembly ManagedAssemblyResolver(object sender, ResolveEventArgs args)
         {
-            bool netcore =
-                System.Environment.Version.Major >= 5
-             || RuntimeInformation.FrameworkDescription.StartsWith(".NET Core", StringComparison.OrdinalIgnoreCase);
-
             string name = new AssemblyName(args.Name).Name;
 
             foreach (string path in new List<string>
             {
-                Path.Combine(s_systemDirectory, netcore ? "netcore" : "netfx"),
-                s_systemDirectory,
+#if NET7_0_OR_GREATER
+                Path.Combine(Configs.Current.RhinoSystemDir, "netcore"),
+#else
+                Path.Combine(Configs.Current.RhinoSystemDir, "netfx"),
+#endif
+                Configs.Current.RhinoSystemDir,
                 typeof(RhinoCore).Assembly.Location,
-                Path.Combine(s_systemDirectory, @"Plug-ins\Grasshopper"),
+                Path.Combine(Configs.Current.RhinoSystemDir, @"Plug-ins\Grasshopper"),
             })
             {
                 string file = Path.Combine(path, name + ".dll");
@@ -134,22 +83,72 @@ namespace Rhino.Testing
             return null;
         }
 
-        static string GetRHPPath(string rhpName)
+#if NET7_0_OR_GREATER
+        // FIXME: Rhino.Runtime.InProcess.RhinoCore should take care of this 
+        static System.Runtime.Loader.AssemblyLoadContext s_context;
+
+        static readonly ConcurrentDictionary<string, IntPtr> s_nativeCache = new ConcurrentDictionary<string, IntPtr>();
+
+        static void InitNativeResolver()
         {
-            string rhp = Path.Combine(s_systemDirectory, "Plug-ins", rhpName);
-            if (File.Exists(rhp))
-            {
-                return rhp;
-            }
+            AppDomain.CurrentDomain.AssemblyLoad += ManageAssemblyLoaded;
 
-            rhp = Path.Combine(Path.GetDirectoryName(s_systemDirectory), "Plug-ins", rhpName);
-            if (File.Exists(rhp))
-            {
-                return rhp;
-            }
-
-            throw new FileNotFoundException(rhpName);
+            Assembly assembly = typeof(RhinoCore).Assembly;
+            s_context = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly);
+            s_context.ResolvingUnmanagedDll += ResolvingUnmanagedDll;
         }
+
+        static void ManageAssemblyLoaded(object sender, AssemblyLoadEventArgs args)
+        {
+            Assembly assembly = args.LoadedAssembly;
+
+            if (assembly.IsDynamic
+                    || System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly) == s_context)
+            {
+                return;
+            }
+
+            NativeLibrary.SetDllImportResolver(assembly, NativeAssemblyResolver);
+        }
+
+        static IntPtr ResolvingUnmanagedDll(Assembly assembly, string name)
+        {
+            return NativeAssemblyResolver(name, assembly, null);
+        }
+
+        static IntPtr NativeAssemblyResolver(string libname, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            if (s_nativeCache.TryGetValue(libname, out var ptr))
+            {
+                return ptr;
+            }
+
+            TestContext.WriteLine($"Resolving {libname}... ");
+
+            foreach (string path in new List<string>
+            {
+                assembly.Location,
+                Path.Combine(Configs.Current.RhinoSystemDir, "netcore"),
+                Configs.Current.RhinoSystemDir,
+            })
+            {
+                var file = Path.Combine(path, libname + ".dll");
+                if (File.Exists(file))
+                {
+                    ptr = NativeLibrary.Load(file);
+                    s_nativeCache[libname] = ptr;
+                    return ptr;
+                }
+            }
+
+            s_nativeCache[libname] = IntPtr.Zero;
+            TestContext.WriteLine($"no mapping found");
+            return IntPtr.Zero;
+        }
+
+#else
+        static void InitNativeResolver() { }
+#endif
     }
 }
 

@@ -7,6 +7,8 @@ namespace Rhino.Testing.Fixtures
     [SetUpFixture]
     public abstract class RhinoSetupFixture
     {
+        protected static Configs Configs => Configs.Current;
+
         [OneTimeSetUp]
         public virtual void OneTimeSetup()
         {

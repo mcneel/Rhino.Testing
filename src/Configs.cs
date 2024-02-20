@@ -15,7 +15,9 @@ namespace Rhino.Testing
         public static Configs Current { get; } = new Configs();
 
         public string RhinoSystemDir { get; private set; } = string.Empty;
+        
         public string SettingsDir { get; private set; } = string.Empty;
+        
         public string SettingsFile { get; private set; } = string.Empty;
 
         public bool TryGetConfig<T>(string name, out T value)
