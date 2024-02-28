@@ -16,8 +16,10 @@ namespace Rhino.Testing
 #endif
 
             s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
+        }
 
-
+        public static void LoadRDK()
+        {
             // NOTE:
             // ensure RDK and its associated native libraries are ready
             // rdk.rhp plugin must be loaded before the rdk native library.

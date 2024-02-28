@@ -33,17 +33,34 @@ namespace Rhino.Testing
                 return;
             }
 
+            if (!Directory.Exists(Configs.Current.RhinoSystemDir))
+            {
+                throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
+            }
+
             InitNativeResolver();
             AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
 
             TestContext.WriteLine("Loading rhino core");
             RhinoCoreLoader.LoadCore();
 
-            TestContext.WriteLine("Loading eto platform");
-            RhinoCoreLoader.LoadEto();
+            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadRDK)
+            {
+                TestContext.WriteLine("Loading rdk");
+                RhinoCoreLoader.LoadRDK();
+            }
 
-            TestContext.WriteLine("Loading grasshopper");
-            PluginLoader.LoadGrasshopper();
+            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadEto)
+            {
+                TestContext.WriteLine("Loading eto platform");
+                RhinoCoreLoader.LoadEto();
+            }
+
+            if (Configs.Current.LoadGrasshopper)
+            {
+                TestContext.WriteLine("Loading grasshopper");
+                PluginLoader.LoadGrasshopper();
+            }
 
             s_initd = true;
         }

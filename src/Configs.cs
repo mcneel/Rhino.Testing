@@ -1,66 +1,80 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Rhino.Testing
 {
+    [Serializable]
+    [XmlRoot("Settings")]
     public sealed class Configs
     {
-        static readonly Assembly s_assembly = typeof(Configs).Assembly;
-        static readonly string s_settingsFileName = $"{s_assembly.GetName().Name}.Configs.xml";
-        readonly XDocument _xml;
+        public static T Deserialize<T>(string settingsFile) => Deserialize<T>(new XmlSerializer(typeof(T)), settingsFile);
+
+        public static T Deserialize<T>(XmlSerializer serializer, string settingsFile)
+        {
+            if (serializer is null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+
+            using FileStream fstream = new FileStream(settingsFile, FileMode.Open);
+            using XmlReader reader = XmlReader.Create(fstream);
+            return (T)serializer.Deserialize(reader);
+        }
 
         public static Configs Current { get; } = new Configs();
 
-        public string RhinoSystemDir { get; private set; } = string.Empty;
-        
-        public string SettingsDir { get; private set; } = string.Empty;
-        
-        public string SettingsFile { get; private set; } = string.Empty;
+        [XmlElement("RhinoSystemDirectory")]
+        public string RhinoSystemDir { get; set; } = string.Empty;
 
-        public bool TryGetConfig<T>(string name, out T value)
-        {
-            value = default;
+        [XmlElement]
+        public bool LoadEto { get; set; } = false;
 
-            if (_xml is null)
-            {
-                return false;
-            }
+        [XmlElement]
+        public bool LoadRDK { get; set; } = false;
 
-            object v = _xml.Descendants(name).FirstOrDefault()?.Value;
+        [XmlElement]
+        public bool LoadGrasshopper { get; set; } = false;
 
-            if (v is not null
-                    && typeof(T).IsAssignableFrom(v.GetType()))
-            {
-                value = (T)v;
-                return true;
-            }
+        [XmlIgnore]
+        public string SettingsDir { get; } = string.Empty;
 
-            return false;
-        }
+        [XmlIgnore]
+        public string SettingsFile { get; } = string.Empty;
 
         public Configs()
         {
-            RhinoSystemDir = string.Empty;
-            SettingsDir = Path.GetDirectoryName(s_assembly.Location);
-            SettingsFile = Path.Combine(SettingsDir, s_settingsFileName);
+            SettingsFile = GetConfigsFile();
+            SettingsDir = Path.GetDirectoryName(SettingsFile);
+        }
 
-            if (File.Exists(SettingsFile))
+        static Configs()
+        {
+            string cfgFile = GetConfigsFile();
+
+            if (File.Exists(cfgFile))
             {
-                _xml = XDocument.Load(SettingsFile);
-                RhinoSystemDir = _xml.Descendants("RhinoSystemDirectory").FirstOrDefault()?.Value ?? null;
+                Current = Deserialize<Configs>(new XmlSerializer(typeof(Configs)), cfgFile);
 
-                if (!Path.IsPathRooted(RhinoSystemDir))
+                if (Path.IsPathRooted(Current.RhinoSystemDir))
                 {
-                    RhinoSystemDir = Path.GetFullPath(Path.Combine(SettingsDir, RhinoSystemDir));
+                    return;
                 }
+
+                Current.RhinoSystemDir = Path.GetFullPath(
+                        Path.Combine(Path.GetDirectoryName(cfgFile), Current.RhinoSystemDir)
+                    );
             }
-            else
-            {
-                throw new FileLoadException($"Can not find {typeof(Configs).Assembly.GetName().Name}.Configs.xml configuration file");
-            }
+        }
+
+        static string GetConfigsFile()
+        {
+            Assembly s_assembly = typeof(Configs).Assembly;
+            string s_settingsFileName = $"{s_assembly.GetName().Name}.Configs.xml";
+            string settingsDir = Path.GetDirectoryName(s_assembly.Location);
+            return Path.Combine(settingsDir, s_settingsFileName);
         }
     }
 }

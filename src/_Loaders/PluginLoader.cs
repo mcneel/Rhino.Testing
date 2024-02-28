@@ -20,7 +20,6 @@ namespace Rhino.Testing
             return;
         }
 
-
         public static void LoadGrasshopper()
         {
             Rhino.PlugIns.PlugIn.LoadPlugIn(GetRHPPath(@"Grasshopper\GrasshopperPlugin.rhp"), out Guid _);
