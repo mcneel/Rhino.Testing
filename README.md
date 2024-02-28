@@ -12,12 +12,10 @@ Add these package references to your project (.csproj). These references ensure 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="NUnit" Version="3.14.0" IncludeAssets="build;compile" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="Rhino.Testing" Version="8.0.9-beta" />
   </ItemGroup>
 ```
-
-Note the `IncludeAssets="build;compile"` on `NUnit` reference. The nunit test runner is included with the testing application (e.g. Visual Studio) and including nunit assemblies with the test library could cause conflicts.
 
 ### Rhino.Testing Configuration
 
