@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net48;net7.0;net7.0-windows;</TargetFrameworks>
     <Nullable>disable</Nullable>
@@ -11,7 +11,7 @@
     <LangVersion>10</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" $(TargetFramework.EndsWith('windows')) == 'true'">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
     <UseWpf>true</UseWpf>
     <UseWinForms>true</UseWinForms>
   </PropertyGroup>
@@ -21,9 +21,9 @@
     <AssemblyName>Rhino.Testing</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Rhino.Testing</Product>
-    <Version>8.0.6</Version>
+    <Version>8.0.9</Version>
     <PackageVersion>$(Version)-beta</PackageVersion>
-    <Title>Unit Testing for Rhino3D&gt;8</Title>
+    <Title>Unit Testing for Rhino3D</Title>
     <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
     <Authors>Robert McNeel and Associates</Authors>
     <Company>McNeel</Company>
@@ -50,7 +50,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
 
+  <!-- for Rhino>=8 in dotnet core --> 
+  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="RhinoCommon">
       <Version>8.*</Version>
       <PrivateAssets>all</PrivateAssets>
@@ -59,9 +62,13 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="NUnit.runsettings">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+  <!-- for Rhino>=7 in dotnet framework -->
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <PackageReference Include="RhinoCommon">
+      <Version>7.*</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
