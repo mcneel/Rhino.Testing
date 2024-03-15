@@ -84,11 +84,13 @@ namespace Rhino.Testing
                 Path.Combine(Configs.Current.RhinoSystemDir, "netfx"),
 #endif
                 Configs.Current.RhinoSystemDir,
-                typeof(RhinoCore).Assembly.Location,
+                Configs.Current.SettingsDir,
+                Path.GetDirectoryName(typeof(RhinoCore).Assembly.Location),
                 Path.Combine(Configs.Current.RhinoSystemDir, @"Plug-ins\Grasshopper"),
             })
             {
                 string file = Path.Combine(path, name + ".dll");
+                file = File.Exists(file) ? file : Path.ChangeExtension(file, ".rhp");
                 if (File.Exists(file))
                 {
                     TestContext.WriteLine($"Loading assembly from file {file}");
