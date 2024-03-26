@@ -78,6 +78,7 @@ namespace Rhino.Testing
 
             foreach (string path in new List<string>
             {
+                // rhino assemblies and plugins
 #if NET7_0_OR_GREATER
                 Path.Combine(Configs.Current.RhinoSystemDir, "netcore"),
 #else
@@ -90,17 +91,25 @@ namespace Rhino.Testing
             })
             {
                 string file = Path.Combine(path, name + ".dll");
-                file = File.Exists(file) ? file : Path.ChangeExtension(file, ".rhp");
                 if (File.Exists(file))
                 {
                     TestContext.WriteLine($"Loading assembly from file {file}");
-                    return Assembly.LoadFrom(file);
+                    return LoadAssembly(file);
+                }
+
+                file = Path.ChangeExtension(file, ".rhp");
+                if (File.Exists(file))
+                {
+                    TestContext.WriteLine($"Loading plugin assembly from file {file}");
+                    return LoadAssembly(file);
                 }
             }
 
             TestContext.WriteLine($"Could not find assembly {name}");
             return null;
         }
+
+        static Assembly LoadAssembly(string file) => Assembly.LoadFrom(file);
 
 #if NET7_0_OR_GREATER
         // FIXME: Rhino.Runtime.InProcess.RhinoCore should take care of this 
