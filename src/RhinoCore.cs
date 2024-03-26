@@ -44,16 +44,16 @@ namespace Rhino.Testing
             TestContext.WriteLine("Loading rhino core");
             RhinoCoreLoader.LoadCore();
 
-            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadRDK)
-            {
-                TestContext.WriteLine("Loading rdk");
-                RhinoCoreLoader.LoadRDK();
-            }
-
             if (Configs.Current.LoadGrasshopper || Configs.Current.LoadEto)
             {
                 TestContext.WriteLine("Loading eto platform");
                 RhinoCoreLoader.LoadEto();
+            }
+
+            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadRDK)
+            {
+                TestContext.WriteLine("Loading rdk");
+                PluginLoader.LoadRDK();
             }
 
             if (Configs.Current.LoadGrasshopper)
