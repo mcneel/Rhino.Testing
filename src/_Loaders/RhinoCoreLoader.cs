@@ -18,18 +18,6 @@ namespace Rhino.Testing
             s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
         }
 
-        public static void LoadRDK()
-        {
-            // NOTE:
-            // ensure RDK and its associated native libraries are ready
-            // rdk.rhp plugin must be loaded before the rdk native library.
-            // a fresh build of rhino on builder machines does not load this
-            string rdkRhp = Path.Combine(Configs.Current.RhinoSystemDir, "Plug-ins", "rdk.rhp");
-            Rhino.PlugIns.PlugIn.LoadPlugIn(rdkRhp, out Guid _);
-
-            Rhino.Runtime.HostUtils.InitializeRhinoCommon_RDK();
-        }
-
         public static void LoadEto()
         {
             Eto.Platform.AllowReinitialize = true;
