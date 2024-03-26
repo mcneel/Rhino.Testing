@@ -76,6 +76,11 @@ namespace Rhino.Testing
         {
             string name = new AssemblyName(args.Name).Name;
 
+            if (name.EndsWith(".resources"))
+            {
+                return default;
+            }
+
             foreach (string path in new List<string>
             {
                 // rhino assemblies and plugins
@@ -90,18 +95,9 @@ namespace Rhino.Testing
                 Path.Combine(Configs.Current.RhinoSystemDir, @"Plug-ins\Grasshopper"),
             })
             {
-                string file = Path.Combine(path, name + ".dll");
-                if (File.Exists(file))
+                if (TryLoadAssembly(path, name, out Assembly loaded))
                 {
-                    TestContext.WriteLine($"Loading assembly from file {file}");
-                    return LoadAssembly(file);
-                }
-
-                file = Path.ChangeExtension(file, ".rhp");
-                if (File.Exists(file))
-                {
-                    TestContext.WriteLine($"Loading plugin assembly from file {file}");
-                    return LoadAssembly(file);
+                    return loaded;
                 }
             }
 
@@ -109,7 +105,28 @@ namespace Rhino.Testing
             return null;
         }
 
-        static Assembly LoadAssembly(string file) => Assembly.LoadFrom(file);
+        static bool TryLoadAssembly(string path, string name, out Assembly assembly)
+        {
+            assembly = default;
+
+            string file = Path.Combine(path, name + ".dll");
+            if (File.Exists(file))
+            {
+                TestContext.WriteLine($"Loading assembly from file {file}");
+                assembly = Assembly.LoadFrom(file);
+                return true;
+            }
+
+            file = Path.ChangeExtension(file, ".rhp");
+            if (File.Exists(file))
+            {
+                TestContext.WriteLine($"Loading plugin assembly from file {file}");
+                assembly = Assembly.LoadFrom(file);
+                return true;
+            }
+
+            return false;
+        }
 
 #if NET7_0_OR_GREATER
         // FIXME: Rhino.Runtime.InProcess.RhinoCore should take care of this 
