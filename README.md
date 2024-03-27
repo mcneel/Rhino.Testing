@@ -28,18 +28,35 @@ Rhino.Testing will use `Rhino.Testing.Configs.xml` file to read `RhinoSystemDire
 </Settings>
 ```
 
-Specify Grasshopper to be loaded:
-
-```xml
-<LoadGrasshopper>true</LoadGrasshopper>
-```
-
 Specify Eto or RDK to be loaded (if `LoadGrasshopper` is specified, Eto and RDK will be automatically loaded):
 
 ```xml
 <LoadEto>true</LoadEto>
 
 <LoadRDK>true</LoadRDK>
+```
+
+Specify Legacy IronPython to be loaded:
+
+```xml
+<LoadLegacyIronPython>true</LoadLegacyIronPython>
+```
+
+Specify list of plugins to be loaded (These plugins are always loaded before Grasshopper)
+
+```xml
+  <LoadPlugins>
+    <!-- Legacy IronPython -->
+    <Plugin Location="Plug-ins\IronPython\RhinoDLR_Python.rhp" />
+
+    <Plugin Location="MyPlugins\MyRhinoPlugin.rhp" />
+  </LoadPlugins>
+```
+
+Specify Grasshopper to be loaded:
+
+```xml
+<LoadGrasshopper>true</LoadGrasshopper>
 ```
 
 Make sure this file is copied onto the build folder (where `Rhino.Testing.dll` exists):

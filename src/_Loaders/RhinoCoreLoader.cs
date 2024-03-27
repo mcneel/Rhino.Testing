@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 
+using NUnit.Framework;
+
 namespace Rhino.Testing
 {
     static class RhinoCoreLoader
@@ -20,6 +22,8 @@ namespace Rhino.Testing
 
         public static void LoadEto()
         {
+            TestContext.WriteLine("Loading eto platform");
+
             Eto.Platform.AllowReinitialize = true;
             Eto.Platform.Initialize(Eto.Platforms.Wpf);
         }

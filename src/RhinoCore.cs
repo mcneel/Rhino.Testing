@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 
 using NUnit.Framework;
+using System.Linq;
 
 namespace Rhino.Testing
 {
@@ -46,19 +47,26 @@ namespace Rhino.Testing
 
             if (Configs.Current.LoadGrasshopper || Configs.Current.LoadEto)
             {
-                TestContext.WriteLine("Loading eto platform");
                 RhinoCoreLoader.LoadEto();
             }
 
             if (Configs.Current.LoadGrasshopper || Configs.Current.LoadRDK)
             {
-                TestContext.WriteLine("Loading rdk");
                 PluginLoader.LoadRDK();
+            }
+
+            if (Configs.Current.LoadLegacyIronPython)
+            {
+                PluginLoader.LoadLegacyIronPython();
+            }
+
+            if (Configs.Current.LoadPlugins.Any())
+            {
+                PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location));
             }
 
             if (Configs.Current.LoadGrasshopper)
             {
-                TestContext.WriteLine("Loading grasshopper");
                 PluginLoader.LoadGrasshopper();
             }
 
@@ -76,7 +84,7 @@ namespace Rhino.Testing
         {
             string name = new AssemblyName(args.Name).Name;
 
-            if (name.EndsWith(".resources"))
+            if (name.EndsWith(".resources", StringComparison.InvariantCultureIgnoreCase))
             {
                 return default;
             }
@@ -93,6 +101,12 @@ namespace Rhino.Testing
                 Configs.Current.SettingsDir,
                 Path.GetDirectoryName(typeof(RhinoCore).Assembly.Location),
                 Path.Combine(Configs.Current.RhinoSystemDir, @"Plug-ins\Grasshopper"),
+                
+                // system assemblies
+#if NET7_0_OR_GREATER
+#else
+                Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location)),
+#endif
             })
             {
                 if (TryLoadAssembly(path, name, out Assembly loaded))
@@ -132,7 +146,9 @@ namespace Rhino.Testing
         // FIXME: Rhino.Runtime.InProcess.RhinoCore should take care of this 
         static System.Runtime.Loader.AssemblyLoadContext s_context;
 
+#pragma warning disable IDE0090 // Use 'new(...)'
         static readonly ConcurrentDictionary<string, IntPtr> s_nativeCache = new ConcurrentDictionary<string, IntPtr>();
+#pragma warning restore IDE0090 // Use 'new(...)'
 
         static void InitNativeResolver()
         {

@@ -1,8 +1,9 @@
 using System;
 using System.IO;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Rhino.Testing
 {
@@ -19,9 +20,11 @@ namespace Rhino.Testing
                 throw new ArgumentNullException(nameof(serializer));
             }
 
+#pragma warning disable IDE0090 // Use 'new(...)'
             using FileStream fstream = new FileStream(settingsFile, FileMode.Open);
             using XmlReader reader = XmlReader.Create(fstream);
             return (T)serializer.Deserialize(reader);
+#pragma warning restore IDE0090 // Use 'new(...)'
         }
 
         public static Configs Current { get; } = new Configs();
@@ -36,7 +39,17 @@ namespace Rhino.Testing
         public bool LoadRDK { get; set; } = false;
 
         [XmlElement]
+        public bool LoadLegacyIronPython { get; set; } = false;
+
+        [XmlElement]
         public bool LoadGrasshopper { get; set; } = false;
+
+        [XmlArray]
+#pragma warning disable CA1002 // Do not expose generic lists
+#pragma warning disable CA2227 // Collection properties should be read only
+        public List<Plugin> LoadPlugins { get; set; } = new List<Plugin>();
+#pragma warning restore CA2227 // Collection properties should be read only
+#pragma warning restore CA1002 // Do not expose generic lists
 
         [XmlIgnore]
         public string SettingsDir { get; } = string.Empty;
@@ -76,5 +89,13 @@ namespace Rhino.Testing
             string settingsDir = Path.GetDirectoryName(s_assembly.Location);
             return Path.Combine(settingsDir, s_settingsFileName);
         }
+    }
+
+    [Serializable]
+    [XmlRoot("Plugin")]
+    public sealed class Plugin
+    {
+        [XmlAttribute]
+        public string Location { get; set; } = string.Empty;
     }
 }
