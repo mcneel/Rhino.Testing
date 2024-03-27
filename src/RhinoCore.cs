@@ -60,7 +60,7 @@ namespace Rhino.Testing
                 PluginLoader.LoadLegacyIronPython();
             }
 
-            if (Configs.Current.LoadPlugins.Any())
+            if (Configs.Current.LoadPlugins.Count != 0)
             {
                 PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location));
             }
