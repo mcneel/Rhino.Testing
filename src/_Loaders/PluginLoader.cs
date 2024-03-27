@@ -9,6 +9,14 @@ namespace Rhino.Testing
 {
     static class PluginLoader
     {
+        public static IEnumerable<string> GetPluginSearchPaths()
+        {
+            const string PLUGINS = "Plug-ins";
+
+            yield return Path.Combine(Configs.Current.RhinoSystemDir, PLUGINS);
+            yield return Path.Combine(Path.GetDirectoryName(Configs.Current.RhinoSystemDir), PLUGINS);
+        }
+
         public static string GetRHPPath(string rhpPath)
         {
             string rhp = Path.Combine(Configs.Current.RhinoSystemDir, rhpPath);

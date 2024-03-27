@@ -89,25 +89,7 @@ namespace Rhino.Testing
                 return default;
             }
 
-            foreach (string path in new List<string>
-            {
-                // rhino assemblies and plugins
-#if NET7_0_OR_GREATER
-                Path.Combine(Configs.Current.RhinoSystemDir, "netcore"),
-#else
-                Path.Combine(Configs.Current.RhinoSystemDir, "netfx"),
-#endif
-                Configs.Current.RhinoSystemDir,
-                Configs.Current.SettingsDir,
-                Path.GetDirectoryName(typeof(RhinoCore).Assembly.Location),
-                Path.Combine(Configs.Current.RhinoSystemDir, @"Plug-ins\Grasshopper"),
-                
-                // system assemblies
-#if NET7_0_OR_GREATER
-#else
-                Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location)),
-#endif
-            })
+            foreach (string path in GetSearchPaths())
             {
                 if (TryLoadAssembly(path, name, out Assembly loaded))
                 {
@@ -115,8 +97,31 @@ namespace Rhino.Testing
                 }
             }
 
-            TestContext.WriteLine($"Could not find assembly {name}");
+            TestContext.WriteLine($"Skip resolving assembly {name}");
             return null;
+        }
+
+        public static IEnumerable<string> GetSearchPaths()
+        {
+            // rhino assemblies and plugins
+#if NET7_0_OR_GREATER
+            yield return Path.Combine(Configs.Current.RhinoSystemDir, "netcore");
+#else
+            yield return Path.Combine(Configs.Current.RhinoSystemDir, "netfx");
+#endif
+
+            yield return Configs.Current.RhinoSystemDir;
+
+            foreach (var path in PluginLoader.GetPluginSearchPaths())
+            {
+                // Grasshopper.dll is here
+                yield return Path.Combine(path, @"Grasshopper");
+
+                // RhinoCodePluginGH is here
+                yield return Path.Combine(path, @"Grasshopper\Components");
+            }
+
+            yield return Path.GetDirectoryName(typeof(RhinoCore).Assembly.Location);
         }
 
         static bool TryLoadAssembly(string path, string name, out Assembly assembly)
@@ -135,6 +140,14 @@ namespace Rhino.Testing
             if (File.Exists(file))
             {
                 TestContext.WriteLine($"Loading plugin assembly from file {file}");
+                assembly = Assembly.LoadFrom(file);
+                return true;
+            }
+
+            file = Path.ChangeExtension(file, ".gha");
+            if (File.Exists(file))
+            {
+                TestContext.WriteLine($"Loading grasshopper plugin assembly from file {file}");
                 assembly = Assembly.LoadFrom(file);
                 return true;
             }
