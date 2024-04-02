@@ -28,6 +28,12 @@ Rhino.Testing will use `Rhino.Testing.Configs.xml` file to read `RhinoSystemDire
 </Settings>
 ```
 
+When initializing Rhino, an empty headless document is created. You can disable this behaviour:
+
+```xml
+<CreateRhinoDoc>false</CreateRhinoDoc>
+```
+
 Specify Eto or RDK to be loaded (if `LoadGrasshopper` is specified, Eto and RDK will be automatically loaded):
 
 ```xml

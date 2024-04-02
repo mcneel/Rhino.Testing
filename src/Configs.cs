@@ -39,6 +39,9 @@ namespace Rhino.Testing
         public bool LoadRDK { get; set; } = false;
 
         [XmlElement]
+        public bool CreateRhinoDoc { get; set; } = true;
+
+        [XmlElement]
         public bool LoadLegacyIronPython { get; set; } = false;
 
         [XmlElement]

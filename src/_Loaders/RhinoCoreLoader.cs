@@ -8,8 +8,9 @@ namespace Rhino.Testing
     static class RhinoCoreLoader
     {
         static IDisposable s_core;
+        static IDisposable s_doc;
 
-        public static void LoadCore()
+        public static void LoadCore(bool createDoc)
         {
 #if NET7_0_OR_GREATER
             string[] args = new string[] { "/netcore " };
@@ -18,6 +19,12 @@ namespace Rhino.Testing
 #endif
 
             s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
+
+            if (createDoc)
+            {
+                Rhino.RhinoDoc.ActiveDoc = Rhino.RhinoDoc.CreateHeadless(string.Empty);
+                s_doc = Rhino.RhinoDoc.ActiveDoc;
+            }
         }
 
         public static void LoadEto()
@@ -31,7 +38,10 @@ namespace Rhino.Testing
         public static void DisposeCore()
         {
             (s_core as Rhino.Runtime.InProcess.RhinoCore)?.Dispose();
-            s_core = null;
+            (s_doc as Rhino.RhinoDoc)?.Dispose();
+
+            s_core = default;
+            s_doc = default;
         }
     }
 }
