@@ -43,7 +43,10 @@ namespace Rhino.Testing
             AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
 
             TestContext.WriteLine("Loading rhino core");
-            RhinoCoreLoader.LoadCore(Configs.Current.CreateRhinoDoc);
+            RhinoCoreLoader.LoadCore(
+                createDoc: Configs.Current.CreateRhinoDoc,
+                createView: Configs.Current.CreateRhinoView
+                );
 
             if (Configs.Current.LoadGrasshopper || Configs.Current.LoadEto)
             {
