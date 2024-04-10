@@ -34,6 +34,12 @@ When initializing Rhino, an empty headless document is created. You can disable 
 <CreateRhinoDoc>false</CreateRhinoDoc>
 ```
 
+The default document will be assigned an active view as well. You can disable this behaviour:
+
+```xml
+<CreateRhinoView>false</CreateRhinoView>
+```
+
 Specify Eto or RDK to be loaded (if `LoadGrasshopper` is specified, Eto and RDK will be automatically loaded):
 
 ```xml
