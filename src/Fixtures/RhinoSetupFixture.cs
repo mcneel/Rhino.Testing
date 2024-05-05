@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -7,6 +8,14 @@ namespace Rhino.Testing.Fixtures
     [SetUpFixture]
     public abstract class RhinoSetupFixture
     {
+        protected static void LoadGHA(IEnumerable<string> ghaPaths)
+        {
+            if (ghaPaths is null)
+                throw new ArgumentNullException(nameof(ghaPaths));
+
+            GHALoader.LoadGHA(ghaPaths);
+        }
+
         protected static Configs Configs => Configs.Current;
 
         [OneTimeSetUp]

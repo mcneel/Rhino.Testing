@@ -11,6 +11,16 @@
     <LangVersion>10</LangVersion>
   </PropertyGroup>
 
+  <!-- for Rhino>=8 in dotnet core -->
+  <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+    <RhinoAPIVersion>8.*</RhinoAPIVersion>
+  </PropertyGroup>
+
+  <!-- for Rhino>=7 in dotnet framework -->
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <RhinoAPIVersion>7.*</RhinoAPIVersion>
+  </PropertyGroup>
+
   <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
     <UseWpf>true</UseWpf>
     <UseWinForms>true</UseWinForms>
@@ -52,20 +62,16 @@
     </PackageReference>
   </ItemGroup>
 
-  <!-- for Rhino>=8 in dotnet core --> 
-  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+  <ItemGroup>
     <PackageReference Include="RhinoCommon">
-      <Version>8.*</Version>
+      <Version>$(RhinoAPIVersion)</Version>
       <PrivateAssets>all</PrivateAssets>
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
 
-  <!-- for Rhino>=7 in dotnet framework -->
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <PackageReference Include="RhinoCommon">
-      <Version>7.*</Version>
+    <PackageReference Include="Grasshopper">
+      <Version>$(RhinoAPIVersion)</Version>
       <PrivateAssets>all</PrivateAssets>
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
