@@ -125,6 +125,28 @@ Implement the `Rhino.Testing.Fixtures.RhinoSetupFixture` abstract class in your 
     }
 ```
 
+### Loading GHAs for Testing
+
+If your tests required a Grasshopper definition to be loaded, you can use `RhinoSetupFixture.LoadGHA(IEnumerable<string> ghaPaths)` method:
+
+```csharp
+    [SetUpFixture]
+    public sealed class SetupFixture : Rhino.Testing.Fixtures.RhinoSetupFixture
+    {
+        public override void OneTimeSetup()
+        {
+            base.OneTimeSetup();
+
+            LoadGHA(new string[] {
+              @"/path/to/gh1plugins/FirstTestPlugin.gha",
+              @"/path/to/gh1plugins/SecondTestPlugin.gha",
+            });
+        }
+    }
+```
+
+These GH plugins will be loaded during startup.
+
 ### Test Fixture
 
 Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` abstract class in your test library, add methods for each of your test and make sure to add the `[Test]` attribute to these methods:
