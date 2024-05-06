@@ -13,7 +13,7 @@ namespace Rhino.Testing.Fixtures
             if (ghaPaths is null)
                 throw new ArgumentNullException(nameof(ghaPaths));
 
-            GHALoader.LoadGHA(ghaPaths);
+            Rhino.Testing.Grasshopper.GH1Loader.LoadGHA(ghaPaths);
         }
 
         protected static Configs Configs => Configs.Current;

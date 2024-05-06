@@ -162,3 +162,35 @@ Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` abstract class in your t
         }
     }
 ```
+
+### Testing Grasshopper Files
+
+You can run Grasshopper definitions as tests. If definition contains a *Context Bake* component that is named `result`, the data structure in that definition is checked for *GH_Boolean* values and the result is returned.
+
+Notice the *Context Bake* component at the right side of this definition:
+
+![](docs/test_grasshopper_circle.png)
+
+This is how the fixture would run the definition:
+
+```csharp
+    [TestFixture]
+    public sealed class PrimitivesFixture : Rhino.Testing.Fixtures.RhinoTestFixture
+    {
+        [Test]
+        public void TestCircle()
+        {
+            const string ghFilePath = @"Files\circle.gh";
+
+            RhinoTestFixture.TestGrasshopper(ghFilePath, out bool result, out GHReport report);
+            
+            // check if result is true
+            Assert.IsTrue(result);
+
+            // and report has no errors
+            Assert.IsFalse(report.HasErrors);
+        }
+    }
+```
+
+The `GHReport` data structure contains any component messages after definition is solved.
