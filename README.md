@@ -48,6 +48,12 @@ Specify Eto or RDK to be loaded (if `LoadGrasshopper` is specified, Eto and RDK 
 <LoadRDK>true</LoadRDK>
 ```
 
+If you want Rhino.Testing to load Eto you must not include Eto in your build directory or both assemblies will try to load, and it will fail.
+Below the Eto.Forms nuget is set to not copy to the build direcotry
+``` xml
+<PackageReference Include="Eto" Version="2.8.4" Private="False" PrivateAssets="all" />
+```
+
 Specify Legacy IronPython to be loaded:
 
 ```xml
