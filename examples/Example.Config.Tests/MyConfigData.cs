@@ -6,8 +6,6 @@ namespace Example.Tests
     [XmlRoot("Settings")]
     public sealed class CustomTestConfigData
     {
-        [XmlElement]
-        public string MySettings { get; set; }
 
         [XmlElement]
         public double Tolerance { get; set; }

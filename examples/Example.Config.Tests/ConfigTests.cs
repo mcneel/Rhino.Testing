@@ -24,7 +24,7 @@ public class ConfigTests : Rhino.Testing.Fixtures.RhinoTestFixture
         }
     }
 
-    public IEnumerable BoxSets()
+    public static IEnumerable BoxSets()
     {
         yield return new TestCaseData(new Box(new BoundingBox(0, 0, 0, 100, 100, 100)), new Box(new BoundingBox(50, 50, 50, 150, 150, 150))).Returns(true);
         yield return new TestCaseData(new Box(new BoundingBox(0, 0, 0, 20, 100, 100)), new Box(new BoundingBox(50, 30, 50, 150, 150, 150))).Returns(true);

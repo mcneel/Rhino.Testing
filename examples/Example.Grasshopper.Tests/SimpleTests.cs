@@ -1,6 +1,8 @@
 using System.Collections;
 using NUnit.Framework;
 using Rhino.Geometry;
+using Rhino.Testing.Fixtures;
+using Rhino.Testing.Grasshopper;
 
 namespace Example.Tests;
 
@@ -19,8 +21,20 @@ public class SimpleTests : Rhino.Testing.Fixtures.RhinoTestFixture
     }
 
     [Test]
+    public void SimpleRunTest()
+    {
+        RhinoTestFixture.TestGrasshopper(CircleAreaScript, out bool result, out GHReport report);
+
+        // check if result is true
+        Assert.IsTrue(result);
+
+        // and report has no errors
+        Assert.IsFalse(report.HasErrors);
+    }
+
+    [Test]
     [TestCaseSource(nameof(AreaPairs))]
-    public bool CircleAreas(decimal radius, decimal area)
+    public bool ComplexRunTest(decimal radius, decimal area)
     {
         var doc = ScriptExtensions.LoadDocument(CircleAreaScript);
         doc.ExpireSolution();
