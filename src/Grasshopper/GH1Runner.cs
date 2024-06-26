@@ -26,8 +26,6 @@ namespace Rhino.Testing.Grasshopper
             bool hasOutputComponents = false;
             result = true;
 
-            var asserts = ghDoc.Objects.Where(ao => ao.ComponentGuid == s_utAssertId);
-
             foreach (IGH_DocumentObject activeObjects in ghDoc.Objects.Where(ao => ao.ComponentGuid == s_ctxBakeId
                                                            || ao.ComponentGuid == s_ctxPrintId
                                                            || ao.ComponentGuid == s_utAssertId))
