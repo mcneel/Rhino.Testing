@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Rhino.Testing.Fixtures
 {
 
-    public class RhinoTestFixtureAttribute : TestFixtureAttribute, IDisposable
+    public sealed class RhinoTestFixtureAttribute : TestFixtureAttribute, IDisposable
     {
         /// <summary>Default Constructor</summary>
         public RhinoTestFixtureAttribute()
