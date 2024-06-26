@@ -2,4 +2,56 @@
   <ItemGroup>
     <SourceDir Include="$(MSBuildThisFileDirectory)src\" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <LangVersion>10</LangVersion>
+  </PropertyGroup>
+
+  <!-- for Rhino>=8 in dotnet core -->
+  <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+    <RhinoAPIVersion>8.*</RhinoAPIVersion>
+  </PropertyGroup>
+
+  <!-- for Rhino>=7 in dotnet framework -->
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <RhinoAPIVersion>7.*</RhinoAPIVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
+    <UseWpf>true</UseWpf>
+    <UseWinForms>true</UseWinForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.*" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
+    <PackageReference Include="coverlet.collector" Version="3.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon">
+      <Version>$(RhinoAPIVersion)</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Grasshopper">
+      <Version>$(RhinoAPIVersion)</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
 </Project>
