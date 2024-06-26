@@ -20,11 +20,8 @@ namespace Example.Tests
         {
             string settingsFile = Rhino.Testing.Configs.Current.SettingsFile;
 
-            // create an xml serializer for your settings type
-            XmlSerializer serializer = new XmlSerializer(typeof(CustomTestConfigData));
-
             // deserialize your settings
-            Current = Rhino.Testing.Configs.Deserialize<CustomTestConfigData>(serializer, settingsFile);
+            Current = Rhino.Testing.Configs.Deserialize<CustomTestConfigData>(settingsFile);
         }
     }
 

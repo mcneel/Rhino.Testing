@@ -7,11 +7,6 @@
 	<LoadRDK>true</LoadRDK>
 	<LoadLegacyIronPython>false</LoadLegacyIronPython>
 	<LoadGrasshopper>false</LoadGrasshopper>
-	<LoadPlugins>
-		<!-- My plugins Go Here -->
-	</LoadPlugins>
-	<CustomTestConfigData>
-		<Tolerance>0.001</Tolerance>
-		<Iterations>3</Iterations>
-	</CustomTestConfigData>
+	<Tolerance>0.001</Tolerance>
+	<MaxIterations>3</MaxIterations>
 </Settings>
