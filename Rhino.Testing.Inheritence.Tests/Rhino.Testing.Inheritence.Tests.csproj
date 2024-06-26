@@ -20,4 +20,10 @@
     <ProjectReference Include="..\src\Rhino.Testing.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Rhino.Testing.Configs.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
