@@ -2,7 +2,7 @@
 
 NUnit dotnet unit testing for Rhino3D
 
-## Settin Up Your Project
+## Setting Up Your Project
 
 ### Package References
 
@@ -13,7 +13,7 @@ Add these package references to your project (.csproj). These references ensure 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
-    <PackageReference Include="Rhino.Testing" Version="8.0.10-beta" />
+    <PackageReference Include="Rhino.Testing" Version="8.0.*-beta" />
   </ItemGroup>
 ```
 
@@ -200,3 +200,21 @@ This is how the fixture would run the definition:
 ```
 
 The `GHReport` data structure contains any component messages after definition is solved.
+
+### Test Attribute
+
+Alternatively you can use the RhinoTestAttribute. This attribute does not require you to inherit from the TestFixture class, or create a SetUpFixture. Another advantage is that by using it, you can use Rhino classes in TestDataSource.
+
+Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` attribute above each test class in your test library, add methods for each of your test and make sure to add the `[Test]` attribute to these methods:
+
+```csharp
+    [RhinoTestFixture]
+    public sealed class PrimitivesFixture
+    {
+        [Test]
+        public void YourRhinoTest()
+        {
+            // you rhino test
+        }
+    }
+```
