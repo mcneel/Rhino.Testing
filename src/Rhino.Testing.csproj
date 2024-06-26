@@ -31,7 +31,7 @@
     <AssemblyName>Rhino.Testing</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Rhino.Testing</Product>
-    <Version>8.0.16</Version>
+    <Version>8.0.17</Version>
     <PackageVersion>$(Version)-beta</PackageVersion>
     <Title>Unit Testing for Rhino3D</Title>
     <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
