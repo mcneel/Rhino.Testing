@@ -11,7 +11,7 @@ namespace Rhino.Testing.Grasshopper
     {
         static readonly Guid s_ctxBakeId = new("AE2531B4-BAB2-4BB1-B5BF-F2143D10C132");
         static readonly Guid s_ctxPrintId = new("73215EC5-0EB5-4F85-9E07-B09C4590CE2B");
-        static readonly Guid s_utAssertId = new ("0890a32c-4e30-4f06-a98f-ed62b45838cf");
+        static readonly Guid s_utAssertId = new ("0890A32C-4E30-4F06-A98F-ED62B45838CF");
 
         /// <summary>
         /// Runs a Grasshopper file and returns the result and a report.
