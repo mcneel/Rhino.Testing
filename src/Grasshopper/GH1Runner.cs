@@ -1,7 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-
+using System.Linq;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
@@ -12,23 +11,36 @@ namespace Rhino.Testing.Grasshopper
     {
         static readonly Guid s_ctxBakeId = new("AE2531B4-BAB2-4BB1-B5BF-F2143D10C132");
         static readonly Guid s_ctxPrintId = new("73215EC5-0EB5-4F85-9E07-B09C4590CE2B");
+        static readonly Guid s_utAssertId = new ("0890A32C-4E30-4F06-A98F-ED62B45838CF");
 
+        /// <summary>
+        /// Runs a Grasshopper file and returns the result and a report.
+        /// </summary>
+        /// <param name="ghFile">The full path to the Grasshopper File</param>
+        /// <param name="result">False by default, returns a combination of results from Context Print, Context Bake, and Assert True.</param>
+        /// <param name="report">A report of all the component error and warning messages</param>
+        /// <param name="reportLevel">Level filter for the report, results below the given level will not be returned</param>
         public static void TestGrasshopper(string ghFile, out bool result, out GHReport report, GHMessageLevel reportLevel)
         {
             GH_Document ghDoc = RunGrasshopper(ghFile, out report, reportLevel);
-            bool hasCtxComponents = false;
+            bool hasOutputComponents = false;
             result = true;
 
-            foreach (GH_Component ctxComp in ghDoc.Objects.Where(ao => ao.ComponentGuid == s_ctxBakeId
-                                                                    || ao.ComponentGuid == s_ctxPrintId)
-                                                          .Cast<GH_Component>())
+            foreach (IGH_DocumentObject activeObjects in ghDoc.Objects.Where(ao => ao.ComponentGuid == s_ctxBakeId
+                                                           || ao.ComponentGuid == s_ctxPrintId
+                                                           || ao.ComponentGuid == s_utAssertId))
             {
-                hasCtxComponents = true;
-                IGH_Param gparam = ctxComp.Params.Input[0];
-                IGH_Structure data = gparam.VolatileData;
+                IGH_Structure data = activeObjects switch
+                {
+                    IGH_Component component => component.Params.Output[0].VolatileData,
+                    IGH_Param param => param.VolatileData,
+                    _ => new GH_Structure<GH_Boolean>(),
+                };
 
                 foreach (GH_Path p in data.Paths)
                 {
+                    hasOutputComponents = true;
+
                     foreach (GH_Boolean d in data.get_Branch(p)
                                                  .OfType<GH_Boolean>())
                     {
@@ -37,7 +49,7 @@ namespace Rhino.Testing.Grasshopper
                 }
             }
 
-            result &= hasCtxComponents;
+            result &= hasOutputComponents;
         }
 
         static GH_Document RunGrasshopper(string ghFile, out GHReport report, GHMessageLevel reportLevel)
