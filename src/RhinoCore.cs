@@ -39,8 +39,9 @@ namespace Rhino.Testing
                 throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
             }
 
-
             RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
+            // query and set updated system directory
+            Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
             AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
 
             TestContext.WriteLine("Loading rhino core");
