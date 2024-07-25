@@ -34,6 +34,15 @@ namespace Rhino.Testing
                 return rhp;
             }
 
+            // on macOS plugins can be bundles
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                if (Directory.Exists(rhp))
+                {
+                    return rhp;
+                }
+            }
+
             // On Rhino-Windows, walk back up from System path to find plugin path
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -90,19 +99,27 @@ namespace Rhino.Testing
 
             string rhpPath;
             PlugIns.LoadPlugInResult res = PlugIns.LoadPlugInResult.ErrorUnknown;
+            Guid rpyId = Guid.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                rhpPath = "RhCore.framework/Versions/A/Resources/ManagedPlugIns/RhinoDLR_Python.rhp";
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
+                rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/RhinoDLR_Python.rhp/RhinoDLR_Python.rhp");
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out rpyId);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 rhpPath = GetRHPPath(@"Plug-ins\IronPython\RhinoDLR_Python.rhp");
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out rpyId);
+            }
+
+            if (Guid.Empty == rpyId)
+            {
+                throw new RhinoInsideInitializationException("Failed loading legacy ironpython plugin (missing plugin id)");
             }
 
             if (PlugIns.LoadPlugInResult.Success != res)
+            {
                 throw new RhinoInsideInitializationException("Failed loading legacy ironpython plugin");
+            }
         }
 
         public static void LoadGrasshopper()
@@ -114,7 +131,7 @@ namespace Rhino.Testing
             Guid ghId = Guid.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                rhpPath = "RhCore.framework/Versions/A/Resources/ManagedPlugIns/GrasshopperPlugin.rhp";
+                rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/GrasshopperPlugin.rhp/GrasshopperPlugin.rhp");
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -123,16 +140,26 @@ namespace Rhino.Testing
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
             }
 
+            if (Guid.Empty == ghId)
+            {
+                throw new RhinoInsideInitializationException("Failed loading grasshopper plugin (missing plugin id)");
+            }
+
             if (PlugIns.LoadPlugInResult.Success == res)
             {
                 object ghObj = RhinoApp.GetPlugInObject(ghId);
+                if (ghObj is null)
+                    throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
+
                 if (ghObj?.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
                     runHeadLess.Invoke(ghObj, null);
                 else
                     throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");
             }
             else
+            {
                 throw new RhinoInsideInitializationException("Failed loading grasshopper plugin");
+            }
         }
 
         public static void LoadPlugins(IEnumerable<string> rhpPaths)
