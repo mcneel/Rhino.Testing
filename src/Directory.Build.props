@@ -1,6 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <SourceDir Include="$(MSBuildThisFileDirectory)src\" />
+  </ItemGroup>
+  
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0;net7.0-windows;</TargetFrameworks>
     <Nullable>disable</Nullable>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -26,33 +29,6 @@
     <UseWinForms>true</UseWinForms>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <RootNamespace>Rhino.Testing</RootNamespace>
-    <AssemblyName>Rhino.Testing</AssemblyName>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Product>Rhino.Testing</Product>
-    <Version>8.0.17</Version>
-    <PackageVersion>$(Version)-beta</PackageVersion>
-    <Title>Unit Testing for Rhino3D</Title>
-    <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
-    <Authors>Robert McNeel and Associates</Authors>
-    <Company>McNeel</Company>
-    <Copyright>Copyright (c) 1997-2024 Robert McNeel and Associates</Copyright>
-    <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
-    <PackageProjectUrl>https://github.com/mcneel/Rhino.Testing</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>https://github.com/mcneel/Rhino.Testing/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$(SourceDir)..\README.md" Pack="true" PackagePath="" />
-    <None Include="$(SourceDir)..\art\icon.png" Pack="true" PackagePath="" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.*" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
@@ -77,4 +53,5 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
 </Project>

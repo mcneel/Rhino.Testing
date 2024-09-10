@@ -15,5 +15,10 @@ namespace Rhino.Testing.Fixtures
         {
             GH1Runner.TestGrasshopper(ghFile, out result, out report, reportLevel);
         }
+
+        protected static void RunGrasshopper(string ghFile, out GHReport report, GHMessageLevel reportLevel = GHMessageLevel.Error)
+        {
+            GH1Runner.RunGrasshopper(ghFile, out report, reportLevel);
+        }
     }
 }
