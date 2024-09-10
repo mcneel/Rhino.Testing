@@ -52,7 +52,7 @@ namespace Rhino.Testing.Grasshopper
             result &= hasOutputComponents;
         }
 
-        static GH_Document RunGrasshopper(string ghFile, out GHReport report, GHMessageLevel reportLevel)
+        public static GH_Document RunGrasshopper(string ghFile, out GHReport report, GHMessageLevel reportLevel)
         {
             GH_Document ghDoc = ReadDocument(ghFile);
 
@@ -63,7 +63,7 @@ namespace Rhino.Testing.Grasshopper
             return ghDoc;
         }
 
-        static GH_Document ReadDocument(string ghFile)
+        public static GH_Document ReadDocument(string ghFile)
         {
             var io = new GH_DocumentIO();
             io.Open(ghFile);
