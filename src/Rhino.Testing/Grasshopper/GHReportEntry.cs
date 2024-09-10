@@ -17,6 +17,10 @@ namespace Rhino.Testing.Grasshopper
 
         public bool HasErrors => _messages.Any(m => m.Level == GHMessageLevel.Error);
 
+        public bool HasWarnings => _messages.Any(m => m.Level == GHMessageLevel.Warning);
+
+        public bool HasRemarks => _messages.Any(m => m.Level == GHMessageLevel.Remark);
+
         public GHReportEntry(object source, Guid typeId, Guid instanceId, IEnumerable<GHMessage> messages)
         {
             _source = source;
