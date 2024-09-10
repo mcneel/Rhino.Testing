@@ -14,17 +14,6 @@
     <LangVersion>10</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Authors>Robert McNeel and Associates</Authors>
-    <Company>McNeel</Company>
-    <Copyright>Copyright (c) 1997-2024 Robert McNeel and Associates</Copyright>
-    <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
-    <PackageProjectUrl>https://github.com/mcneel/Rhino.Testing</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
-
   <!-- for Rhino>=8 in dotnet core -->
   <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <RhinoAPIVersion>8.*</RhinoAPIVersion>

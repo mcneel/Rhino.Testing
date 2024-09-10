@@ -4,11 +4,9 @@ using Rhino.Testing.Fixtures;
 
 namespace Rhino.Testing.Attribute.Tests
 {
-
     [RhinoTestFixture]
     public class DataSourceTest
     {
-
         [Test]
         [TestCaseSource(nameof(PointList))]
         public void Test(Point3d point)

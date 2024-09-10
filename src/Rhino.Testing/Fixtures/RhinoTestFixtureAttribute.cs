@@ -3,7 +3,6 @@ using NUnit.Framework;
 
 namespace Rhino.Testing.Fixtures
 {
-
     /// <summary>
     /// Ensures Rhino is loaded correctly before any tests run, or any test data is loaded.
     /// This attribute does not require you to inherit from the <see cref="RhinoTestFixture"/> class,
@@ -27,7 +26,5 @@ namespace Rhino.Testing.Fixtures
         {
             RhinoCore.TearDown();
         }
-
     }
-
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 
 using NUnit.Framework;
-using System.Linq;
 
 namespace Rhino.Testing
 {

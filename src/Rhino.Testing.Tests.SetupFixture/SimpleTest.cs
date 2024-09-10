@@ -1,13 +1,10 @@
 using Rhino.Geometry;
 using Rhino.Testing.Fixtures;
 
-namespace Rhino.Testing.Inheritence.Tests
+namespace Rhino.Testing.Tests
 {
-
-    [RhinoTestFixture]
     public class SimpleTest : RhinoTestFixture
     {
-
         [Test]
         public void Test()
         {
@@ -16,7 +13,5 @@ namespace Rhino.Testing.Inheritence.Tests
             Assert.That(point.Y, Is.GreaterThan(0));
             Assert.That(point.Z, Is.GreaterThan(0));
         }
-
     }
-
 }
