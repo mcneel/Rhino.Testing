@@ -107,9 +107,60 @@ var settings = Rhino.Testing.Configs.Deserialize<MyTestSettings>(serializer, set
 
 ```
 
-### Setup Fixture
+### Test Setup Fixture
 
-Implement the `Rhino.Testing.Fixtures.RhinoSetupFixture` abstract class in your test library to setup and teardown your testing fixture:
+There are two ways to ensure Rhino is loaded and ready before your tests are executed:
+
+- Applying `Rhino.Testing.Fixtures.RhinoTestFixtureAttribute` to your test fixtures
+- Deriving your test fixtures from `Rhino.Testing.Fixtures.RhinoSetupFixture`
+
+Using `RhinoTestFixtureAttribute` is usually better since it allows using RhinoCommon data types during test discovery. For example, without using the attribute, the test below fails during discovery since test-host does not have access to RhinoCommon. Using the `RhinoTestFixtureAttribute` however makes sure that Rhino is loaded during test discovery in the host:
+
+```csharp
+    [RhinoTestFixture]      // remove this attribute and test fails to load
+    public class Point3dTest
+    {
+        [Test]
+        [TestCaseSource(nameof(PointList))]
+        public void Test(Point3d point)
+        {
+            Assert.That(point.X, Is.GreaterThan(0));
+            Assert.That(point.Y, Is.GreaterThan(0));
+            Assert.That(point.Z, Is.GreaterThan(0));
+        }
+
+        public static IEnumerable PointList()
+        {
+            yield return new TestCaseData(new Point3d(1, 2, 3));
+            yield return new TestCaseData(new Point3d(4, 5, 6));
+            yield return new TestCaseData(new Point3d(7, 8, 9));
+        }
+    }
+```
+
+Is also means you do not have to add an implementation of `RhinoSetupFixture` in your tests to initialize Rhino.
+
+#### Using Setup Attribute
+
+Add `RhinoTestFixtureAttribute` to any class to ensure Rhino is initialized for your test:
+
+```csharp
+    [RhinoTestFixture]
+    public sealed class PrimitivesFixture
+    {
+        [Test]
+        public void YourRhinoTest()
+        {
+            // you rhino test
+        }
+    }
+```
+
+Note that your test case does not need to be derived from any specific base class. However deriving from `Rhino.Testing.Fixtures.RhinoTestFixture` gives you access to extra functionality discussed below.
+
+#### Using Setup Fixture
+
+Implement the `Rhino.Testing.Fixtures.RhinoSetupFixture` abstract class in your test library to setup and teardown your testing fixture. This ensures Rhino is setup before testing starts and torn down after tests are done:
 
 ```csharp
     [SetUpFixture]
@@ -131,7 +182,14 @@ Implement the `Rhino.Testing.Fixtures.RhinoSetupFixture` abstract class in your 
     }
 ```
 
-### Loading GHAs for Testing
+#### Mixing Setup Fixture and Attribute
+
+It is okay to mix using `RhinoSetupFixture` and `RhinoTestFixtureAttribute` in your test projects:
+
+- Ensure `RhinoTestFixtureAttribute` is added to all test fixtures that use RhinoCommon data types to ensure they are correctly processed during test discovery
+- Derive from `RhinoSetupFixture` to add custom initialization logic that is necessary before tests are actually executed (this is after the test discovery step). For example you can make sure a few needed Rhino or Grasshopper plugins are loaded before testing starts. Loading of these plugins is most probably not necessary during test discovery.
+
+#### Loading GHAs for Testing
 
 If your tests required a Grasshopper definition to be loaded, you can use `RhinoSetupFixture.LoadGHA(IEnumerable<string> ghaPaths)` method:
 
@@ -153,7 +211,7 @@ If your tests required a Grasshopper definition to be loaded, you can use `Rhino
 
 These GH plugins will be loaded during startup.
 
-### Test Fixture
+### Test Fixtures
 
 Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` abstract class in your test library, add methods for each of your test and make sure to add the `[Test]` attribute to these methods:
 
@@ -199,22 +257,40 @@ This is how the fixture would run the definition:
     }
 ```
 
-The `GHReport` data structure contains any component messages after definition is solved.
-
-### Test Attribute
-
-Alternatively you can use the RhinoTestAttribute. This attribute does not require you to inherit from the TestFixture class, or create a SetUpFixture. Another advantage is that by using it, you can use Rhino classes in TestDataSource.
-
-Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` attribute above each test class in your test library, add methods for each of your test and make sure to add the `[Test]` attribute to these methods:
+The `GHReport` data structure contains any component messages after definition is solved. You can filter the level of messages by passing `GHMessageLevel reportLevel` argument:
 
 ```csharp
-    [RhinoTestFixture]
-    public sealed class PrimitivesFixture
+    [TestFixture]
+    public sealed class PrimitivesFixture : Rhino.Testing.Fixtures.RhinoTestFixture
     {
         [Test]
-        public void YourRhinoTest()
+        public void TestCircle()
         {
-            // you rhino test
+            const string ghFilePath = @"Files\circle.gh";
+
+            RhinoTestFixture.TestGrasshopper(ghFilePath,
+                                             out bool result,
+                                             out GHReport report,
+                                             GHMessageLevel.Warning);
+        }
+    }
+```
+
+
+You can also use the simpler `RhinoTestFixture.RunGrasshopper` method that does not expect a *Context Bake* component named `result`. This way you can implement your own testing logic. The function still returns a `GHReport report`.
+
+```csharp
+    [TestFixture]
+    public sealed class PrimitivesFixture : Rhino.Testing.Fixtures.RhinoTestFixture
+    {
+        [Test]
+        public void TestCircle()
+        {
+            const string ghFilePath = @"Files\circle.gh";
+
+            RhinoTestFixture.RunGrasshopper(ghFilePath,
+                                            out GHReport report,
+                                            GHMessageLevel.Warning);
         }
     }
 ```
