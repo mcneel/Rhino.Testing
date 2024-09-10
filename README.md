@@ -11,7 +11,7 @@ Add these package references to your project (.csproj). These references ensure 
 ```xml
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="Rhino.Testing" Version="8.0.*-beta" />
   </ItemGroup>
