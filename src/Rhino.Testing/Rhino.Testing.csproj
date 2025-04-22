@@ -26,6 +26,8 @@
     <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
     <PackageProjectUrl>https://github.com/mcneel/Rhino.Testing</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
