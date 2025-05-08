@@ -4,7 +4,7 @@
     <AssemblyName>Rhino.Testing</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Rhino.Testing</Product>
-    <Version>8.0.25</Version>
+    <Version>$(RhinoTestingVersion)</Version>
     <PackageVersion>$(Version)-beta</PackageVersion>
     <Title>Unit Testing for Rhino3D</Title>
     <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
@@ -16,11 +16,9 @@
   <PropertyGroup>
     <Authors>Robert McNeel and Associates</Authors>
     <Company>McNeel</Company>
-    <Copyright>Copyright (c) 1997-2025 Robert McNeel and Associates</Copyright>
-    <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
+    <Copyright>Copyright (c) 1997-$(CopyrightYear) Robert McNeel and Associates</Copyright>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
-    <PackageProjectUrl>https://github.com/mcneel/Rhino.Testing</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SignAssembly>True</SignAssembly>
     <!-- <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile> -->

@@ -15,8 +15,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
+    <RhinoTestingVersion>8.0.25</RhinoTestingVersion>
     <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
+    <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <CopyrightYear>2025</CopyrightYear>
+    <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mcneel/rhino.testing/tree/rhino-8.x</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/mcneel/rhino.testing/blob/rhino-8.x/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
