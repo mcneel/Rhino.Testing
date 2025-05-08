@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing", "src\Rhino.Testing.csproj", "{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing", "src\Rhino.Testing\Rhino.Testing.csproj", "{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests", "src\Rhino.Testing.Tests\Rhino.Testing.Tests.csproj", "{D394A941-3DD7-4CA1-A8DF-91B5B48198FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests.SetupAttribute", "src\Rhino.Testing.Tests.SetupAttribute\Rhino.Testing.Tests.SetupAttribute.csproj", "{050F993B-998C-4F28-9C39-3491B353EB9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests.SetupFixture", "src\Rhino.Testing.Tests.SetupFixture\Rhino.Testing.Tests.SetupFixture.csproj", "{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests.Utils", "src\Rhino.Testing.Tests.Utils\Rhino.Testing.Tests.Utils.csproj", "{A49EB5F1-7D83-4668-AF75-290BDCF350FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D394A941-3DD7-4CA1-A8DF-91B5B48198FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D394A941-3DD7-4CA1-A8DF-91B5B48198FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D394A941-3DD7-4CA1-A8DF-91B5B48198FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D394A941-3DD7-4CA1-A8DF-91B5B48198FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{050F993B-998C-4F28-9C39-3491B353EB9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050F993B-998C-4F28-9C39-3491B353EB9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050F993B-998C-4F28-9C39-3491B353EB9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050F993B-998C-4F28-9C39-3491B353EB9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

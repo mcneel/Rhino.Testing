@@ -1,0 +1,59 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <LangVersion>10</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RhinoTestingVersion>8.0.25</RhinoTestingVersion>
+    <RhinoInsideVersion>8.0.4-beta</RhinoInsideVersion>
+    <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
+    <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <CopyrightYear>2025</CopyrightYear>
+    <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mcneel/rhino.testing/tree/rhino-8.x</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/mcneel/rhino.testing/blob/rhino-8.x/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
+    <UseWpf>true</UseWpf>
+    <UseWinForms>true</UseWinForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.*" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
+    <PackageReference Include="coverlet.collector" Version="3.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon">
+      <Version>$(RhinoAPIVersion)</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Grasshopper">
+      <Version>$(RhinoAPIVersion)</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
