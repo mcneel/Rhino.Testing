@@ -16,6 +16,7 @@
 
   <PropertyGroup>
     <RhinoTestingVersion>8.0.25</RhinoTestingVersion>
+    <RhinoInsideVersion>8.0.4-beta</RhinoInsideVersion>
     <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>

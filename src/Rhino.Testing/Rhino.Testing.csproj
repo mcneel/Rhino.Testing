@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Rhino.Inside" Version="8.0.4-beta" />
+    <PackageReference Include="Rhino.Inside" Version="$(RhinoInsideVersion)" />
   </ItemGroup>
 
   <Target Name="CopyPackage" AfterTargets="Pack">
