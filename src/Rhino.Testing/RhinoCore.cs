@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Collections.Concurrent;
 
 using NUnit.Framework;
 
@@ -39,7 +37,9 @@ namespace Rhino.Testing
                 throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
             }
 
-            InitNativeResolver();
+            RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
+            // query and set updated system directory
+            Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
             AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
 
             TestContext.WriteLine("Loading rhino core");
@@ -106,15 +106,6 @@ namespace Rhino.Testing
 
         public static IEnumerable<string> GetSearchPaths()
         {
-            // rhino assemblies and plugins
-#if NET7_0_OR_GREATER
-            yield return Path.Combine(Configs.Current.RhinoSystemDir, "netcore");
-#else
-            yield return Path.Combine(Configs.Current.RhinoSystemDir, "netfx");
-#endif
-
-            yield return Configs.Current.RhinoSystemDir;
-
             foreach (var path in PluginLoader.GetPluginSearchPaths())
             {
                 // Grasshopper.dll is here
@@ -157,75 +148,6 @@ namespace Rhino.Testing
 
             return false;
         }
-
-#if NET7_0_OR_GREATER
-        // FIXME: Rhino.Runtime.InProcess.RhinoCore should take care of this 
-        static System.Runtime.Loader.AssemblyLoadContext s_context;
-
-#pragma warning disable IDE0090 // Use 'new(...)'
-        static readonly ConcurrentDictionary<string, IntPtr> s_nativeCache = new ConcurrentDictionary<string, IntPtr>();
-#pragma warning restore IDE0090 // Use 'new(...)'
-
-        static void InitNativeResolver()
-        {
-            AppDomain.CurrentDomain.AssemblyLoad += ManageAssemblyLoaded;
-
-            Assembly assembly = typeof(RhinoCore).Assembly;
-            s_context = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly);
-            s_context.ResolvingUnmanagedDll += ResolvingUnmanagedDll;
-        }
-
-        static void ManageAssemblyLoaded(object sender, AssemblyLoadEventArgs args)
-        {
-            Assembly assembly = args.LoadedAssembly;
-
-            if (assembly.IsDynamic
-                    || System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly) == s_context)
-            {
-                return;
-            }
-
-            NativeLibrary.SetDllImportResolver(assembly, NativeAssemblyResolver);
-        }
-
-        static IntPtr ResolvingUnmanagedDll(Assembly assembly, string name)
-        {
-            return NativeAssemblyResolver(name, assembly, null);
-        }
-
-        static IntPtr NativeAssemblyResolver(string libname, Assembly assembly, DllImportSearchPath? searchPath)
-        {
-            if (s_nativeCache.TryGetValue(libname, out var ptr))
-            {
-                return ptr;
-            }
-
-            TestContext.WriteLine($"Resolving {libname}... ");
-
-            foreach (string path in new List<string>
-            {
-                assembly.Location,
-                Path.Combine(Configs.Current.RhinoSystemDir, "netcore"),
-                Configs.Current.RhinoSystemDir,
-            })
-            {
-                var file = Path.Combine(path, libname + ".dll");
-                if (File.Exists(file))
-                {
-                    ptr = NativeLibrary.Load(file);
-                    s_nativeCache[libname] = ptr;
-                    return ptr;
-                }
-            }
-
-            s_nativeCache[libname] = IntPtr.Zero;
-            TestContext.WriteLine($"no mapping found");
-            return IntPtr.Zero;
-        }
-
-#else
-        static void InitNativeResolver() { }
-#endif
     }
 }
 

@@ -1,8 +1,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <SourceDir Include="$(MSBuildThisFileDirectory)src\" />
-  </ItemGroup>
-  
+  <PropertyGroup>
+    <TargetFrameworks>net48;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Nullable>disable</Nullable>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
@@ -14,14 +14,9 @@
     <LangVersion>10</LangVersion>
   </PropertyGroup>
 
-  <!-- for Rhino>=8 in dotnet core -->
-  <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
-    <RhinoAPIVersion>8.*</RhinoAPIVersion>
-  </PropertyGroup>
-
-  <!-- for Rhino>=7 in dotnet framework -->
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <RhinoAPIVersion>7.*</RhinoAPIVersion>
+  <PropertyGroup>
+    <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
+    <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
@@ -53,5 +48,5 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
 </Project>
