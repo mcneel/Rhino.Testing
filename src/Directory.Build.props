@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <NoWarn>$(NoWarn);NU1701;NETSDK1138</NoWarn>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
@@ -16,7 +16,7 @@
 
   <PropertyGroup>
     <RhinoTestingVersion>9.0.0</RhinoTestingVersion>
-    <RhinoInsideVersion>9.0.0-beta</RhinoInsideVersion>
+    <RhinoInsideVersion>9.0.1-beta</RhinoInsideVersion>
     <RhinoAPIVersion>9.0.25051.305-wip</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
