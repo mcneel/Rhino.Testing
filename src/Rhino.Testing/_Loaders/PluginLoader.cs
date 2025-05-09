@@ -147,11 +147,9 @@ namespace Rhino.Testing
 
             if (PlugIns.LoadPlugInResult.Success == res)
             {
-                object ghObj = RhinoApp.GetPlugInObject(ghId);
-                if (ghObj is null)
-                    throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
+                object ghObj = RhinoApp.GetPlugInObject(ghId) ?? throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
 
-                if (ghObj?.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
+                if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
                     runHeadLess.Invoke(ghObj, null);
                 else
                     throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");

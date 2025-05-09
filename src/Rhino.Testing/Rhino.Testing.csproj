@@ -10,6 +10,7 @@
     <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CA1510</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
