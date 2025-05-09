@@ -1,15 +1,7 @@
 # Change Log
 
-## [8.0.26-beta] - 2025-05-09
+## [9.0.1-beta] - 2025-05-09
 - Strong-named package
 
-## [8.0.25-beta] - 2025-05-08
-- Using Rhino.Inside v8
-- Removed net9 builds
-
-## [8.0.24-beta] - 2025-05-08
-- Strong-named package
-- Added net9 builds
-
-## [8.0.0-beta] - 2024-02-12
+## [9.0.0-beta] - 2025-05-08
 - Initial release
