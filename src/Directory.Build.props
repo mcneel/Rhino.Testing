@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RhinoTestingVersion>9.0.0</RhinoTestingVersion>
+    <RhinoTestingVersion>9.0.1</RhinoTestingVersion>
     <RhinoInsideVersion>9.0.1-beta</RhinoInsideVersion>
     <RhinoAPIVersion>9.0.25051.305-wip</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
