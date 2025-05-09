@@ -20,7 +20,7 @@
     <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SignAssembly>True</SignAssembly>
-    <!-- <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile> -->
+    <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
