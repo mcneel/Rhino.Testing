@@ -38,9 +38,7 @@ namespace Rhino.Testing
             }
 
             RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
-            // query and set updated system directory
             Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
-            AppDomain.CurrentDomain.AssemblyResolve += ManagedAssemblyResolver;
 
             TestContext.WriteLine("Loading rhino core");
             RhinoCoreLoader.LoadCore(
@@ -81,72 +79,6 @@ namespace Rhino.Testing
             RhinoCoreLoader.DisposeCore();
             s_inRhino = false;
             s_initd = false;
-        }
-
-        static Assembly ManagedAssemblyResolver(object sender, ResolveEventArgs args)
-        {
-            string name = new AssemblyName(args.Name).Name;
-
-            if (name.EndsWith(".resources", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return default;
-            }
-
-            foreach (string path in GetSearchPaths())
-            {
-                if (TryLoadAssembly(path, name, out Assembly loaded))
-                {
-                    return loaded;
-                }
-            }
-
-            TestContext.WriteLine($"Skip resolving assembly {name}");
-            return null;
-        }
-
-        public static IEnumerable<string> GetSearchPaths()
-        {
-            foreach (var path in PluginLoader.GetPluginSearchPaths())
-            {
-                // Grasshopper.dll is here
-                yield return Path.Combine(path, @"Grasshopper");
-
-                // RhinoCodePluginGH is here
-                yield return Path.Combine(path, @"Grasshopper\Components");
-            }
-
-            yield return Path.GetDirectoryName(typeof(RhinoCore).Assembly.Location);
-        }
-
-        static bool TryLoadAssembly(string path, string name, out Assembly assembly)
-        {
-            assembly = default;
-
-            string file = Path.Combine(path, name + ".dll");
-            if (File.Exists(file))
-            {
-                TestContext.WriteLine($"Loading assembly from file {file}");
-                assembly = Assembly.LoadFrom(file);
-                return true;
-            }
-
-            file = Path.ChangeExtension(file, ".rhp");
-            if (File.Exists(file))
-            {
-                TestContext.WriteLine($"Loading plugin assembly from file {file}");
-                assembly = Assembly.LoadFrom(file);
-                return true;
-            }
-
-            file = Path.ChangeExtension(file, ".gha");
-            if (File.Exists(file))
-            {
-                TestContext.WriteLine($"Loading grasshopper plugin assembly from file {file}");
-                assembly = Assembly.LoadFrom(file);
-                return true;
-            }
-
-            return false;
         }
     }
 }
