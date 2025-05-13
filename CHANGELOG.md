@@ -1,5 +1,8 @@
 # Change Log
 
+## [9.0.3-beta] - 2025-05-12
+- Added support for loading Grasshopper 2
+
 ## [9.0.2-beta] - 2025-05-12
 - Resolver bug fixes
 
