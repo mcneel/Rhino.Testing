@@ -198,7 +198,10 @@ namespace Rhino.Testing
 
         static string GetTargetFrameworkTag()
         {
-            return Environment.Version.Major >= 5 ? "net{Environment.Version.Major}.0" : "net48";
+            // FIXME:
+            // this needs to be smarter I think
+            int major = Environment.Version.Major;
+            return major >= 5 ? "net8.0" : "net48";
         }
     }
 }
