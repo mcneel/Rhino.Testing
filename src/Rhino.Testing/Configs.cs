@@ -50,6 +50,9 @@ namespace Rhino.Testing
         [XmlElement]
         public bool LoadGrasshopper { get; set; } = false;
 
+        [XmlElement]
+        public bool LoadGrasshopper2 { get; set; } = false;
+
         [XmlArray]
 #pragma warning disable CA1002 // Do not expose generic lists
 #pragma warning disable CA2227 // Collection properties should be read only

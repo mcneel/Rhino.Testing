@@ -145,6 +145,41 @@ namespace Rhino.Testing
             }
         }
 
+        public static void LoadGrasshopper2()
+        {
+            TestContext.WriteLine("Loading grasshopper 2");
+
+            string rhpPath;
+            PlugIns.LoadPlugInResult res = PlugIns.LoadPlugInResult.ErrorUnknown;
+            Guid gh2Id = Guid.Empty;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/Grasshopper2Plugin.rhp/Grasshopper2Plugin.rhp");
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out gh2Id);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                string target = GetTargetFrameworkTag();
+                rhpPath = GetRHPPath($@"Plug-ins\Grasshopper2\{target}\Grasshopper2Plugin.rhp");
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out gh2Id);
+            }
+
+            if (Guid.Empty == gh2Id)
+            {
+                throw new RhinoInsideInitializationException("Failed loading grasshopper 2 plugin (missing plugin id)");
+            }
+
+            if (PlugIns.LoadPlugInResult.Success == res)
+            {
+                // force gh2 to load all its plugins
+                Grasshopper2.Framework.PluginServer.LoadAllScopedPlugins();
+            }
+            else
+            {
+                throw new RhinoInsideInitializationException("Failed loading grasshopper 2 plugin");
+            }
+        }
+
         public static void LoadPlugins(IEnumerable<string> rhpPaths)
         {
             foreach (var rhpPath in rhpPaths)
@@ -159,6 +194,11 @@ namespace Rhino.Testing
                     throw new RhinoInsideInitializationException($"Failed loading plugin: {fullPath}");
                 }
             }
+        }
+
+        static string GetTargetFrameworkTag()
+        {
+            return Environment.Version.Major >= 5 ? "net{Environment.Version.Major}.0" : "net48";
         }
     }
 }
