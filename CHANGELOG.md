@@ -1,5 +1,8 @@
 # Change Log
 
+## [9.0.2-beta] - 2025-05-12
+- Resolver bug fixes
+
 ## [9.0.1-beta] - 2025-05-09
 - Strong-named package
 
