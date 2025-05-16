@@ -22,11 +22,11 @@ jobs:
       - name: Build
         run: dotnet build -c Release Rhino.Testing.sln
 
-      - name: Install Rhino
+      - name: Install Rhino WIP
         uses: mcneel/setup-rhino3d@v2
         id: setup_rhino
         with:
-          release-version: latest
+          release-version: wip
           email-address: ${{ secrets.EMAIL_ADDRESS }}
 
       - name: Run Tests (net48)
