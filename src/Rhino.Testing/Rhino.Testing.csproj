@@ -10,6 +10,7 @@
     <Description>NUnit dotnet testing library for Rhino3D&gt;8</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CA1510</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,7 +21,7 @@
     <PackageTags>Unit Testing NUnit Rhino Rhino3D</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SignAssembly>True</SignAssembly>
-    <!-- <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile> -->
+    <AssemblyOriginatorKeyFile>Rhino.Testing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
