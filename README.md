@@ -77,6 +77,12 @@ Specify Grasshopper to be loaded:
 <LoadGrasshopper>true</LoadGrasshopper>
 ```
 
+Specify Grasshopper 2 to be loaded:
+
+```xml
+<LoadGrasshopper2>true</LoadGrasshopper2>
+```
+
 Make sure this file is copied onto the build folder (where `Rhino.Testing.dll` exists):
 
 ```xml
