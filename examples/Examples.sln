@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Config.Tests", "Example.Config.Tests\Example.Config.Tests.csproj", "{237431FD-E882-4C99-94A1-AC0576D0F728}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Eto.Tests", "Example.Eto.Tests\Example.Eto.Tests.csproj", "{E8079076-1646-477B-A848-BFDFD504FAC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Grasshopper.Tests", "Example.Grasshopper.Tests\Example.Grasshopper.Tests.csproj", "{889AADD9-D2AD-4B7F-9446-06B81274912A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Rhino.Tests", "Example.Rhino.Tests\Example.Rhino.Tests.csproj", "{C9D72712-676D-41CD-B944-C907EF30642C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9E0ED5E0-71C0-472E-BB1C-457B41EE83AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing", "..\src\Rhino.Testing.csproj", "{8600A979-2CA8-4126-90A0-1800A8352767}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{237431FD-E882-4C99-94A1-AC0576D0F728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237431FD-E882-4C99-94A1-AC0576D0F728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237431FD-E882-4C99-94A1-AC0576D0F728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237431FD-E882-4C99-94A1-AC0576D0F728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8079076-1646-477B-A848-BFDFD504FAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8079076-1646-477B-A848-BFDFD504FAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8079076-1646-477B-A848-BFDFD504FAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8079076-1646-477B-A848-BFDFD504FAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889AADD9-D2AD-4B7F-9446-06B81274912A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889AADD9-D2AD-4B7F-9446-06B81274912A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889AADD9-D2AD-4B7F-9446-06B81274912A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889AADD9-D2AD-4B7F-9446-06B81274912A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9D72712-676D-41CD-B944-C907EF30642C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D72712-676D-41CD-B944-C907EF30642C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D72712-676D-41CD-B944-C907EF30642C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D72712-676D-41CD-B944-C907EF30642C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8600A979-2CA8-4126-90A0-1800A8352767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8600A979-2CA8-4126-90A0-1800A8352767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8600A979-2CA8-4126-90A0-1800A8352767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8600A979-2CA8-4126-90A0-1800A8352767}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8600A979-2CA8-4126-90A0-1800A8352767} = {9E0ED5E0-71C0-472E-BB1C-457B41EE83AA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB0FC60A-9499-4B45-8192-A3CD5EB4C7F0}
+	EndGlobalSection
+EndGlobal
