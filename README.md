@@ -24,7 +24,7 @@ Rhino.Testing will use `Rhino.Testing.Configs.xml` file to read `RhinoSystemDire
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <RhinoSystemDirectory>C:\Program Files\Rhino 8\System</RhinoSystemDirectory>
+  <RhinoSystemDirectory>C:\Program Files\Rhino 9 WIP\System</RhinoSystemDirectory>
 </Settings>
 ```
 
