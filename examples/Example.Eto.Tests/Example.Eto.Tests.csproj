@@ -10,10 +10,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
 		<PackageReference Include="NUnit" Version="3.14.0" />
 		<PackageReference Include="NUnitTestAdapter.WithFramework" Version="2.0.0" />
-		<PackageReference Include="Rhino.Testing" Version="8.0.17-beta" />
+		<PackageReference Include="Rhino.Testing" Version="8.0.27-beta" />
 		<PackageReference Include="RhinoCommon" Version="8.7.24138.15431" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
 		<PackageReference Include="Eto.Forms" Version="2.8.3" Private="False" PrivateAssets="all" />
 		<PackageReference Include="Eto.Platform.Wpf" Version="2.8.3" Private="False" PrivateAssets="all" />
