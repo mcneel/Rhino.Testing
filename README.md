@@ -24,7 +24,7 @@ Rhino.Testing will use `Rhino.Testing.Configs.xml` file to read `RhinoSystemDire
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <RhinoSystemDirectory>C:\Program Files\Rhino 8\System</RhinoSystemDirectory>
+  <RhinoSystemDirectory>C:\Program Files\Rhino 9 WIP\System</RhinoSystemDirectory>
 </Settings>
 ```
 
@@ -75,6 +75,12 @@ Specify Grasshopper to be loaded:
 
 ```xml
 <LoadGrasshopper>true</LoadGrasshopper>
+```
+
+Specify Grasshopper 2 to be loaded:
+
+```xml
+<LoadGrasshopper2>true</LoadGrasshopper2>
 ```
 
 Make sure this file is copied onto the build folder (where `Rhino.Testing.dll` exists):
