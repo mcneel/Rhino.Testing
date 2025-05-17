@@ -51,7 +51,7 @@ Specify Eto or RDK to be loaded (if `LoadGrasshopper` is specified, Eto and RDK 
 If you want Rhino.Testing to load Eto you must not include Eto in your build directory or both assemblies will try to load, and it will fail.
 Below the Eto.Forms nuget is set to not copy to the build direcotry
 ``` xml
-<PackageReference Include="Eto" Version="2.8.4" Private="False" PrivateAssets="all" />
+<PackageReference Include="Eto.Forms" Version="2.8.3" Private="False" PrivateAssets="all" />
 ```
 
 Specify Legacy IronPython to be loaded:
@@ -103,7 +103,7 @@ public sealed class MyTestSettings
 }
 
 // use the default settings file (or your own xml file)
-string settingsFile = Rhino.Testing.Configs.SettingsFile;
+string settingsFile = Rhino.Testing.Configs.Current.SettingsFile;
 
 // create an xml serializer for your settings type
 XmlSerializer serializer = new XmlSerializer(typeof(MyTestSettings));
