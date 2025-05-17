@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0;net8.0-windows;net9.0;net9.0-windows</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,15 +15,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RhinoTestingVersion>8.0.28</RhinoTestingVersion>
-    <RhinoInsideVersion>8.0.6-beta</RhinoInsideVersion>
-    <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
+    <RhinoTestingVersion>9.0.4</RhinoTestingVersion>
+    <RhinoInsideVersion>9.0.2-beta</RhinoInsideVersion>
+    <RhinoAPIVersion>9.0.25051.305-wip</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <CopyrightYear>2025</CopyrightYear>
     <RepositoryUrl>https://github.com/mcneel/Rhino.Testing.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/mcneel/rhino.testing/tree/rhino-8.x</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/mcneel/rhino.testing/blob/rhino-8.x/CHANGELOG.md</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/mcneel/rhino.testing/tree/rhino-9.x</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/mcneel/rhino.testing/blob/rhino-9.x/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.EndsWith('windows'))">
@@ -50,6 +50,13 @@
 
     <PackageReference Include="Grasshopper">
       <Version>$(RhinoAPIVersion)</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Grasshopper2">
+      <Version>2.0.9225-wip.14825</Version>
       <PrivateAssets>all</PrivateAssets>
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

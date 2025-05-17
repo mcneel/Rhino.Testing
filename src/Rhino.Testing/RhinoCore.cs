@@ -46,12 +46,12 @@ namespace Rhino.Testing
                 createView: Configs.Current.CreateRhinoView
                 );
 
-            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadEto)
+            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadGrasshopper2 || Configs.Current.LoadEto)
             {
                 RhinoCoreLoader.LoadEto();
             }
 
-            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadRDK)
+            if (Configs.Current.LoadGrasshopper || Configs.Current.LoadGrasshopper2 || Configs.Current.LoadRDK)
             {
                 PluginLoader.LoadRDK();
             }
@@ -69,6 +69,11 @@ namespace Rhino.Testing
             if (Configs.Current.LoadGrasshopper)
             {
                 PluginLoader.LoadGrasshopper();
+            }
+
+            if (Configs.Current.LoadGrasshopper2)
+            {
+                PluginLoader.LoadGrasshopper2();
             }
 
             s_initd = true;
