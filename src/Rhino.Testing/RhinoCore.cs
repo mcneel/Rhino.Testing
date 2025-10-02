@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using NUnit.Framework;
 
@@ -22,8 +23,8 @@ namespace Rhino.Testing
             {
                 return;
             }
-
-            s_inRhino = Process.GetCurrentProcess().ProcessName.Equals("Rhino", StringComparison.OrdinalIgnoreCase);
+            var rhinoProcessName = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "Rhinoceros" : "Rhino";
+            s_inRhino = Process.GetCurrentProcess().ProcessName.Equals(rhinoProcessName, StringComparison.OrdinalIgnoreCase);
             if (s_inRhino)
             {
                 TestContext.WriteLine("Configuring rhino process");
