@@ -34,7 +34,10 @@ namespace Rhino.Testing
                     //Verify apartment state before initialization
                     var apartmentState = Thread.CurrentThread.GetApartmentState();
                     TestContext.WriteLine($"Current thread apartment state: {apartmentState}");
-                    Assert.That(apartmentState, Is.EqualTo(ApartmentState.STA), "For windowed mode, thread must be static (STA). Add Apartment(ApartmentState.STA) to test SetupFixture");
+                    if(apartmentState != ApartmentState.STA)
+                    {
+                        throw new InvalidOperationException("For windowed mode, thread must be static (STA). Add Apartment(ApartmentState.STA) to test SetupFixture");
+                    }
                     List<string> windowedArgs = new List<string>(args);
                     windowedArgs.AddRange(new string[] { "/notemplate", "/nosplash"});
                     s_core = new Rhino.Runtime.InProcess.RhinoCore(windowedArgs.ToArray(), Runtime.InProcess.WindowStyle.Hidden);
