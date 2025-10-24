@@ -50,6 +50,10 @@ namespace Rhino.Testing
         [XmlElement]
         public bool LoadGrasshopper { get; set; } = false;
 
+        [XmlElement]
+        public bool WindowedRhino { get; set; } = false;
+
+
         [XmlArray("LoadPlugins")]
         [XmlArrayItem("Plugin")]
 #pragma warning disable CA1002 // Do not expose generic lists

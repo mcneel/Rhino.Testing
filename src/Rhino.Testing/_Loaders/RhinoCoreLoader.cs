@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 using NUnit.Framework;
 
@@ -23,7 +25,19 @@ namespace Rhino.Testing
 
             lock (s_coreLock)
             {
-                s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
+                if (!Configs.Current.WindowedRhino)
+                {
+                    s_core = new Rhino.Runtime.InProcess.RhinoCore(args);
+                }
+                else
+                {
+                    //Verify apartment state before initialization
+                    var apartmentState = Thread.CurrentThread.GetApartmentState();
+                    TestContext.WriteLine($"Current thread apartment state: {apartmentState}");
+                    Assert.That(apartmentState, Is.EqualTo(ApartmentState.STA), "For windowed mode, thread must be static (STA). Add Apartment(ApartmentState.STA) to test SetupFixture");
+                    List<string> windowedArgs = new List<string>(args);
+                    s_core = new Rhino.Runtime.InProcess.RhinoCore(args, Runtime.InProcess.WindowStyle.Hidden);
+                }
 
                 if (createDoc)
                 {

@@ -7,4 +7,5 @@
 	<LoadRDK>true</LoadRDK>
 	<LoadLegacyIronPython>false</LoadLegacyIronPython>
 	<LoadGrasshopper>false</LoadGrasshopper>
+	<WindowedRhino>true</WindowedRhino>
 </Settings>
