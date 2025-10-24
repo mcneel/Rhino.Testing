@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34511.84
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11111.16 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing", "src\Rhino.Testing\Rhino.Testing.csproj", "{EE10AB9B-51C3-4025-AA26-C4DD3517E04C}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests.SetupFixture", "src\Rhino.Testing.Tests.SetupFixture\Rhino.Testing.Tests.SetupFixture.csproj", "{1B926990-DE0B-4E3A-9700-55EAAD58E0F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino.Testing.Tests.Utils", "src\Rhino.Testing.Tests.Utils\Rhino.Testing.Tests.Utils.csproj", "{A49EB5F1-7D83-4668-AF75-290BDCF350FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhino.Testing.Tests.WindowedSetup", "src\Rhino.Testing.Tests.WindowedSetup\Rhino.Testing.Tests.WindowedSetup.csproj", "{31DA1866-70AC-437B-8B97-169EDDFDE4B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A49EB5F1-7D83-4668-AF75-290BDCF350FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31DA1866-70AC-437B-8B97-169EDDFDE4B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DA1866-70AC-437B-8B97-169EDDFDE4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31DA1866-70AC-437B-8B97-169EDDFDE4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31DA1866-70AC-437B-8B97-169EDDFDE4B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

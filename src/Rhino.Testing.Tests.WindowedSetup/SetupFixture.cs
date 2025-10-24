@@ -1,6 +1,6 @@
 namespace Rhino.Testing.Tests
 {
-    [SetUpFixture]
+    [SetUpFixture, Apartment(ApartmentState.STA)]
     public sealed class SetupFixture : Rhino.Testing.Fixtures.RhinoSetupFixture
     {
         public override void OneTimeSetup() => base.OneTimeSetup();
