@@ -1,5 +1,9 @@
 # Change Log
 
+## [9.0.5-beta] - 2025-12-16
+- Bump Rhino.Inside to 9.0.10-beta for experimental Mac support.
+- Bump RhinoCommon and Grasshopper version to 9.0.25350.305-wip
+
 ## [9.0.4-beta] - 2025-05-13
 - Added support for loading Grasshopper 2
 
