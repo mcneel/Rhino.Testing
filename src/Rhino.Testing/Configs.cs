@@ -62,6 +62,14 @@ namespace Rhino.Testing
 #pragma warning restore CA2227 // Collection properties should be read only
 #pragma warning restore CA1002 // Do not expose generic lists
 
+        [XmlArray("PackageDirectories")]
+        [XmlArrayItem("Directory")]
+#pragma warning disable CA1002 // Do not expose generic lists
+#pragma warning disable CA2227 // Collection properties should be read only
+        public List<DirectoryConfigs> PackageDirectories { get; set; } = new List<DirectoryConfigs>();
+#pragma warning restore CA2227 // Collection properties should be read only
+#pragma warning restore CA1002 // Do not expose generic lists
+
         [XmlIgnore]
         public string SettingsDir { get; } = string.Empty;
 
@@ -74,6 +82,36 @@ namespace Rhino.Testing
             SettingsDir = Path.GetDirectoryName(SettingsFile);
         }
 
+        /// <summary>
+        /// Support for using environment variables in the rhino system directory, package directories, and plugin paths, in the form of ${env:VAR_NAME}
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string ReplaceEnvVars(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return path;
+            int startIndex = 0;
+            while (true)
+            {
+                int envStart = path.IndexOf("${env:", startIndex, StringComparison.OrdinalIgnoreCase);
+                if (envStart == -1)
+                    break;
+                int envEnd = path.IndexOf('}', envStart);
+                if (envEnd == -1)
+                    break;
+                string envVar = path.Substring(envStart + 6, envEnd - envStart - 6);
+                string envVal = Environment.GetEnvironmentVariable(envVar) ?? string.Empty;
+#if NET8_0_OR_GREATER
+                path = path[..envStart] + envVal + path[(envEnd + 1)..];
+#else
+                path = path.Substring(0, envStart) + envVal + path.Substring(envEnd + 1);
+#endif
+                startIndex = envStart + envVal.Length;
+            }
+            return path;
+        }
+
         static Configs()
         {
             string cfgFile = GetConfigsFile();
@@ -81,6 +119,25 @@ namespace Rhino.Testing
             if (File.Exists(cfgFile))
             {
                 Current = Deserialize<Configs>(new XmlSerializer(typeof(Configs)), cfgFile);
+                Current.RhinoSystemDir = ReplaceEnvVars(Current.RhinoSystemDir);
+
+                // separate our the Package Directories by the path separator and trim whitespace
+                List<DirectoryConfigs> dirs = new List<DirectoryConfigs>();
+                foreach (var dir in Current.PackageDirectories)
+                {
+                    var path = ReplaceEnvVars(dir.Path.Trim());
+                    string[] splitDirs = path.Split(new char[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var splitDir in splitDirs)
+                    {
+                        dirs.Add(new DirectoryConfigs() { Path = splitDir.Trim() });
+                    }
+                }
+                Current.PackageDirectories = dirs;
+
+                foreach (var plugin in Current.LoadPlugins)
+                {
+                    plugin.Location = ReplaceEnvVars(plugin.Location);
+                }
 
                 if (Path.IsPathRooted(Current.RhinoSystemDir))
                 {
@@ -108,5 +165,13 @@ namespace Rhino.Testing
     {
         [XmlAttribute]
         public string Location { get; set; } = string.Empty;
+    }
+
+    [Serializable]
+    [XmlRoot("Directory")]
+    public sealed class DirectoryConfigs
+    {
+        [XmlAttribute]
+        public string Path { get; set; } = string.Empty;
     }
 }

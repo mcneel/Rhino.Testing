@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RhinoTestingVersion>8.0.29-ryan.3</RhinoTestingVersion>
+    <RhinoTestingVersion>8.0.29-ryan.4</RhinoTestingVersion>
     <RhinoInsideVersion>8.0.6-beta</RhinoInsideVersion>
     <RhinoAPIVersion>8.27.26019.16021</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
@@ -55,5 +55,6 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+    <!--dotnet nuget push \-\-source "https://pkgs.dev.azure.com/ryancompanies/15351289-1321-4fe2-95a6-a92024e090b6/_packaging/ComputationalDesign_Feed/nuget/v3/index.json" \-\-api-key "RyanCD" "./src/build/Rhino.Testing.8.0.29-ryan.4-beta.nupkg"-->
 
 </Project>

@@ -63,7 +63,7 @@ namespace Rhino.Testing
 
             if (Configs.Current.LoadPlugins.Count != 0)
             {
-                PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location));
+                PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location), Configs.Current.PackageDirectories.Select(d => d.Path));
             }
 
             if (Configs.Current.LoadGrasshopper)
