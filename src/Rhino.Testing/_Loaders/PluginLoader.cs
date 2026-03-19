@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 
 using RhinoInside;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace Rhino.Testing
 {
@@ -169,6 +170,7 @@ namespace Rhino.Testing
             {
                 string fullPath = GetRHPPath(rhpPath, packageDirs);
                 TestContext.WriteLine($"Loading plugin from {fullPath}");
+                Debug.WriteLine($"Loading plugin from {fullPath}");
 
                 if (PlugIns.PlugIn.LoadPlugIn(fullPath, out Guid _)
                         != PlugIns.LoadPlugInResult.Success)

@@ -7,4 +7,7 @@
 	<LoadRDK>true</LoadRDK>
 	<LoadLegacyIronPython>false</LoadLegacyIronPython>
 	<LoadGrasshopper>false</LoadGrasshopper>
+    <PackageDirectories>
+        <Directory Path="${env:ChimeraECSBin}"/>
+    </PackageDirectories>
 </Settings>

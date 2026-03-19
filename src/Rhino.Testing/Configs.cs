@@ -132,6 +132,8 @@ namespace Rhino.Testing
                         dirs.Add(new DirectoryConfigs() { Path = splitDir.Trim() });
                     }
                 }
+                //add the config file directory as a package directory so that plugins can be specified relative to the config file location
+                dirs.Add(new DirectoryConfigs() { Path = Path.GetDirectoryName(cfgFile) });
                 Current.PackageDirectories = dirs;
 
                 foreach (var plugin in Current.LoadPlugins)
