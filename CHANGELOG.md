@@ -1,5 +1,10 @@
 # Change Log
 
+## [8.1.0-beta] - 2026-03-20
+- Add Windowed Rhino Option
+- Add Support for Environment Variables in Paths
+- Add Support for specifying Package Directories
+
 ## [8.0.28-beta] - 2025-05-12
 - Resolver bug fixes
 
