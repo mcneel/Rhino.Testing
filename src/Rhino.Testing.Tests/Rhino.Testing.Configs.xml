@@ -8,6 +8,6 @@
 	<LoadLegacyIronPython>false</LoadLegacyIronPython>
 	<LoadGrasshopper>false</LoadGrasshopper>
     <PackageDirectories>
-        <Directory Path="${env:ChimeraECSBin}"/>
+        <Directory Path="${env:UserProfile}\Rhino 8\Plug-ins\"/>
     </PackageDirectories>
 </Settings>
