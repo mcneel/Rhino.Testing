@@ -14,7 +14,16 @@ namespace Rhino.Testing
     {
         public static string GetRHPPath(string rhpPath, IEnumerable<string> packageDirs = null)
         {
-            if(File.Exists(rhpPath)) return rhpPath;
+            if(File.Exists(rhpPath)) 
+            {
+                if (Path.IsPathRooted(rhpPath))
+                {
+                    return rhpPath;
+                }
+                var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                rhpPath = Path.Combine(dir, rhpPath);
+                return rhpPath; 
+            }
             // first look in the rhino system directory
             string rhp = Path.Combine(Configs.Current.RhinoSystemDir, rhpPath);
             if (File.Exists(rhp))
