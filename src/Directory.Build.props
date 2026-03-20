@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFrameworks>net48;net8.0;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,9 +15,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RhinoTestingVersion>8.0.29-ryan.8</RhinoTestingVersion>
+    <RhinoTestingVersion>8.1.0</RhinoTestingVersion>
     <RhinoInsideVersion>8.0.6-beta</RhinoInsideVersion>
-    <RhinoAPIVersion>8.27.26019.16021</RhinoAPIVersion>
+    <RhinoAPIVersion>8.0.23304.9001</RhinoAPIVersion>
     <SourceDir>$(MSBuildThisFileDirectory)src\</SourceDir>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <CopyrightYear>2025</CopyrightYear>

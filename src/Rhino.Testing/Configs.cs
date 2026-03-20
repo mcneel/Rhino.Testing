@@ -102,7 +102,7 @@ namespace Rhino.Testing
                     break;
                 string envVar = path.Substring(envStart + 6, envEnd - envStart - 6);
                 string envVal = Environment.GetEnvironmentVariable(envVar) ?? string.Empty;
-#if NET8_0_OR_GREATER
+#if NET7_0_OR_GREATER
                 path = path[..envStart] + envVal + path[(envEnd + 1)..];
 #else
                 path = path.Substring(0, envStart) + envVal + path.Substring(envEnd + 1);
