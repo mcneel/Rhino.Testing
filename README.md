@@ -71,6 +71,21 @@ Specify list of plugins to be loaded (These plugins are always loaded before Gra
   </LoadPlugins>
 ```
 
+Specify Directories to Load Packages from
+```xml
+    <PackageDirectories>
+        <Directory Path="Example\Folder"/>
+    </PackageDirectories>
+```
+
+Use Environment Variables for Paths in the config file
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <RhinoSystemDirectory>${env:ProgramFiles}\Rhino 8\System</RhinoSystemDirectory>
+</Settings>
+```
+
 Specify Grasshopper to be loaded:
 
 ```xml
