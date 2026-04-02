@@ -60,6 +60,20 @@ Specify Legacy IronPython to be loaded:
 <LoadLegacyIronPython>true</LoadLegacyIronPython>
 ```
 
+Specify Rhino To Start in Windowed Mode (default is headless):
+```xml
+<WindowedMode>true</WindowedMode>
+```
+Important note: if you set `WindowedMode` to true, you must ensure that your tests are running in a static appartment:
+To do that, add the following attribute to your setup fixture class `Apartment(ApartmentState.STA)`:
+```csharp
+[SetupFixture, Apartment(ApartmentState.STA)]
+public sealed class SetupFixture : Rhino.Testing.Fixtures.RhinoSetupFixture
+{
+    // your setup fixture implementation
+}
+```
+
 Specify list of plugins to be loaded (These plugins are always loaded before Grasshopper)
 
 ```xml
@@ -69,6 +83,21 @@ Specify list of plugins to be loaded (These plugins are always loaded before Gra
 
     <Plugin Location="MyPlugins\MyRhinoPlugin.rhp" />
   </LoadPlugins>
+```
+
+Specify Directories to Load Packages from
+```xml
+    <PackageDirectories>
+        <Directory Path="Example\Folder"/>
+    </PackageDirectories>
+```
+
+Use Environment Variables for Paths in the config file
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <RhinoSystemDirectory>${env:ProgramFiles}\Rhino 8\System</RhinoSystemDirectory>
+</Settings>
 ```
 
 Specify Grasshopper to be loaded:

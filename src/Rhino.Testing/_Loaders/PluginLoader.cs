@@ -6,13 +6,25 @@ using System.Runtime.InteropServices;
 
 using RhinoInside;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace Rhino.Testing
 {
     static class PluginLoader
     {
-        public static string GetRHPPath(string rhpPath)
+        public static string GetRHPPath(string rhpPath, IEnumerable<string> packageDirs = null)
         {
+            if(File.Exists(rhpPath)) 
+            {
+                if (Path.IsPathRooted(rhpPath))
+                {
+                    return rhpPath;
+                }
+                var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                rhpPath = Path.Combine(dir, rhpPath);
+                return rhpPath; 
+            }
+            // first look in the rhino system directory
             string rhp = Path.Combine(Configs.Current.RhinoSystemDir, rhpPath);
             if (File.Exists(rhp))
             {
@@ -35,6 +47,22 @@ namespace Rhino.Testing
                 if (File.Exists(rhp))
                 {
                     return rhp;
+                }
+            }
+
+            if (packageDirs != null)
+            {
+                foreach (var packageDir in packageDirs)
+                {
+                    rhp = Path.Combine(packageDir, rhpPath);
+                    if (File.Exists(rhp))
+                    {
+                        return rhp;
+                    }
+                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Directory.Exists(rhp))
+                    {
+                        return rhp;
+                    }
                 }
             }
 
@@ -145,13 +173,13 @@ namespace Rhino.Testing
             }
         }
 
-        public static void LoadPlugins(IEnumerable<string> rhpPaths)
+        public static void LoadPlugins(IEnumerable<string> rhpPaths, IEnumerable<string> packageDirs)
         {
             foreach (var rhpPath in rhpPaths)
             {
-                string fullPath = GetRHPPath(rhpPath);
-
+                string fullPath = GetRHPPath(rhpPath, packageDirs);
                 TestContext.WriteLine($"Loading plugin from {fullPath}");
+                Debug.WriteLine($"Loading plugin from {fullPath}");
 
                 if (PlugIns.PlugIn.LoadPlugIn(fullPath, out Guid _)
                         != PlugIns.LoadPlugInResult.Success)

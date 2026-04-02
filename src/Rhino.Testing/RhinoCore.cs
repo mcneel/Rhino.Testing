@@ -37,6 +37,14 @@ namespace Rhino.Testing
                 throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
             }
 
+            //add the Package directories to the RHINO_PACKAGE_DIRS environment variable so that RhinoInside can find the plugins in those directories
+            foreach (var packageDir in Configs.Current.PackageDirectories)
+            {
+                var env = Environment.GetEnvironmentVariable("RHINO_PACKAGE_DIRS", EnvironmentVariableTarget.Process);
+                env = string.IsNullOrEmpty(env) ? packageDir.Path : $"{env};{packageDir.Path}";
+                Environment.SetEnvironmentVariable("RHINO_PACKAGE_DIRS", env, EnvironmentVariableTarget.Process);
+            }
+
             RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
             Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
 
@@ -63,7 +71,7 @@ namespace Rhino.Testing
 
             if (Configs.Current.LoadPlugins.Count != 0)
             {
-                PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location));
+                PluginLoader.LoadPlugins(Configs.Current.LoadPlugins.Select(p => p.Location), Configs.Current.PackageDirectories.Select(d => d.Path));
             }
 
             if (Configs.Current.LoadGrasshopper)

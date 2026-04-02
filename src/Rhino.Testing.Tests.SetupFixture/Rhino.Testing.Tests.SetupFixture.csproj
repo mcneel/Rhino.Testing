@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -9,12 +9,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
+      <PackageReference Include="coverlet.collector" Version="3.*">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Rhino.Testing\Rhino.Testing.csproj" />
     <ProjectReference Include="..\Rhino.Testing.Tests.Utils\Rhino.Testing.Tests.Utils.csproj" />
   </ItemGroup>
+
 
   <ItemGroup>
     <None Update="Rhino.Testing.Configs.xml">
