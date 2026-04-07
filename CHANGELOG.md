@@ -1,5 +1,8 @@
 # Change Log
 
+## [9.0.6-beta] - 2026-04-07
+- Bump Rhino.Inside to 9.0.26084.13070-beta to better support Linux.
+
 ## [9.0.5-beta] - 2025-12-16
 - Bump Rhino.Inside to 9.0.10-beta for experimental Mac support.
 - Bump RhinoCommon and Grasshopper version to 9.0.25350.305-wip
