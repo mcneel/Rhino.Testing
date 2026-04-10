@@ -43,7 +43,9 @@ namespace Example.Tests
 
             foreach (var param in params_)
             {
-                var results = param.VolatileData.AllData(true).Cast<bool>();
+                param.CollectData();
+                param.ComputeData();
+                var results = param.VolatileData.AllData(true).OfType<GH_Boolean>().Select(b => b.Value);
                 result &= results.All(t => t);
             }
 

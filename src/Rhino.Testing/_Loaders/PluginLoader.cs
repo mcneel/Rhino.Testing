@@ -13,6 +13,9 @@ namespace Rhino.Testing
     {
         public static string GetRHPPath(string rhpPath)
         {
+            // Normalize path separators for cross-platform compatibility
+            rhpPath = rhpPath.Replace('\\', Path.DirectorySeparatorChar);
+
             string rhp = Path.Combine(Configs.Current.RhinoSystemDir, rhpPath);
             if (File.Exists(rhp))
             {
@@ -59,6 +62,10 @@ namespace Rhino.Testing
             {
                 rdkRhp = GetRHPPath(@"Plug-ins\rdk.rhp");
                 Rhino.PlugIns.PlugIn.LoadPlugIn(rdkRhp, out Guid _);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                //skip for now
             }
             else
                 throw new RhinoInsideInitializationException("Failed loading rdk plugin");
@@ -119,7 +126,7 @@ namespace Rhino.Testing
                 rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/GrasshopperPlugin.rhp/GrasshopperPlugin.rhp");
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux) )
             {
                 rhpPath = GetRHPPath(@"Plug-ins\Grasshopper\GrasshopperPlugin.rhp");
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
