@@ -1,5 +1,10 @@
 # Change Log
 
+## [9.0.7-beta] - 2026-04-10
+- Fix broken GH Tests
+- Find GH on Linux
+- add net9.0 to csproj 
+
 ## [9.0.6-beta] - 2026-04-07
 - Bump Rhino.Inside to 9.0.26084.13070-beta to better support Linux.
 
