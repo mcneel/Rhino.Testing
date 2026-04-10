@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFrameworks>net7.0-windows;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>10</LangVersion>
@@ -12,9 +12,9 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
 		<PackageReference Include="NUnit" Version="3.14.0" />
-		<PackageReference Include="Rhino.Testing" Version="8.0.27-beta" />
-		<PackageReference Include="RhinoCommon" Version="8.7.24138.15431" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
-		<PackageReference Include="Grasshopper" Version="8.7.24138.15431" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
+		<PackageReference Include="Rhino.Testing" Version="9.0.7-beta" />
+		<PackageReference Include="RhinoCommon" Version="9.0.26097.12305-wip" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
+		<PackageReference Include="Grasshopper" Version="9.0.26097.12305-wip" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
 	</ItemGroup>
 
 	<ItemGroup>
