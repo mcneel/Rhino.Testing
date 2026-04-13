@@ -12,7 +12,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
 		<PackageReference Include="NUnit" Version="3.14.0" />
-		<PackageReference Include="Rhino.Testing" Version="9.0.7-beta" />
+		<PackageReference Include="Rhino.Testing" Version="9.0.8-beta" />
 		<PackageReference Include="RhinoCommon" Version="9.0.26097.12305-wip" Private="False" PrivateAssets="all" ExcludeAssets="runtime" />
 	</ItemGroup>
 
