@@ -86,9 +86,6 @@ namespace Rhino.Testing
                     return;
                 }
 
-                Current.RhinoSystemDir = Path.GetFullPath(
-                        Path.Combine(Path.GetDirectoryName(cfgFile), Current.RhinoSystemDir)
-                    );
             }
         }
 

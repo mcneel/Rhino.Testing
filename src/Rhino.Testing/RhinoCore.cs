@@ -33,12 +33,18 @@ namespace Rhino.Testing
                 return;
             }
 
-            if (!Directory.Exists(Configs.Current.RhinoSystemDir))
+            // Do not require the RhinoSystemDir to be set, as the RhinoInside resolver can find Rhino in the "vanilla" installation locations.
+            if (string.IsNullOrEmpty(Configs.Current.RhinoSystemDir) || !Directory.Exists(Configs.Current.RhinoSystemDir))
+                RhinoInside.Resolver.Initialize();
+            else
             {
-                throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
+                if (!Directory.Exists(Configs.Current.RhinoSystemDir))
+                {
+                    throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
+                }
+                RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
             }
 
-            RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
             Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
 
             TestContext.WriteLine("Loading rhino core");

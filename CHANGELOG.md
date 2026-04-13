@@ -1,5 +1,8 @@
 # Change Log
 
+## [9.0.8-beta] - 2026-04-13
+- Allow Rhino.Inside to find Rhino when RhinoSystemDir is not set in the config file
+
 ## [9.0.7-beta] - 2026-04-10
 - Fix broken GH Tests
 - Find GH on Linux
