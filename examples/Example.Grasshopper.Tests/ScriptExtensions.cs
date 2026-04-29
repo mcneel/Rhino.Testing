@@ -22,6 +22,7 @@ namespace Example.Tests
 
         internal static void Solve(GH_Document doc)
         {
+            doc.Enabled = true;
             doc.NewSolution(false);
         }
 
@@ -43,7 +44,7 @@ namespace Example.Tests
 
             foreach (var param in params_)
             {
-                var results = param.VolatileData.AllData(true).Cast<bool>();
+                var results = param.VolatileData.AllData(true).OfType<GH_Boolean>().Select(c => c.Value);
                 result &= results.All(t => t);
             }
 
