@@ -209,8 +209,23 @@ If your tests required a Grasshopper definition to be loaded, you can use `Rhino
     }
 ```
 
-These GH plugins will be loaded during startup.
+#### Referencing your Grasshopper or Rhino plugin project
+Make sure to reference the project only at compile time, not at runtime, because your plugin/component will need to be loaded via the `LoadGHA()` and `<LoadPlugins>` mechanisms.
 
+In the test's projects .csproj:
+```csprpoj
+<ItemGroup>
+  <ProjectReference Include="..\GrasshopperPlugin.Example.csproj">
+     <Private>false</Private>
+     <ExcludeAssets>runtime</ExcludeAssets>
+  </ProjectReference>
+</ItemGroup>
+```
+
+Other projects that depend on RhinoCommon can be referenced normally:
+```csprpoj
+<ProjectReference Include="..\Rhino.GIS.Common\Rhino.GIS.Common.csproj" />
+```
 ### Test Fixtures
 
 Implement the `Rhino.Testing.Fixtures.RhinoTestFixture` abstract class in your test library, add methods for each of your test and make sure to add the `[Test]` attribute to these methods:
