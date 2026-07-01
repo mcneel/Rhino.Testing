@@ -17,6 +17,21 @@ namespace Rhino.Testing
         static bool s_initd;
         static bool s_inRhino;
 
+        static string FirstExistingSystemDir(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            foreach (string entry in value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string path = entry.Trim();
+                if (Directory.Exists(path))
+                    return path;
+            }
+
+            return null;
+        }
+
         public static void Initialize()
         {
             if (s_initd)
@@ -34,16 +49,11 @@ namespace Rhino.Testing
             }
 
             // Do not require the RhinoSystemDir to be set, as the RhinoInside resolver can find Rhino in the "vanilla" installation locations.
-            if (string.IsNullOrEmpty(Configs.Current.RhinoSystemDir) || !Directory.Exists(Configs.Current.RhinoSystemDir))
+            string rhinoDir = FirstExistingSystemDir(Configs.Current.RhinoSystemDir);
+            if (string.IsNullOrEmpty(rhinoDir))
                 RhinoInside.Resolver.Initialize();
             else
-            {
-                if (!Directory.Exists(Configs.Current.RhinoSystemDir))
-                {
-                    throw new DirectoryNotFoundException(Configs.Current.RhinoSystemDir);
-                }
-                RhinoInside.Resolver.Initialize(Configs.Current.RhinoSystemDir);
-            }
+                RhinoInside.Resolver.Initialize(rhinoDir);
 
             Configs.Current.RhinoSystemDir = RhinoInside.Resolver.RhinoSystemDirectory;
 

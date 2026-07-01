@@ -28,6 +28,17 @@ Rhino.Testing will use `Rhino.Testing.Configs.xml` file to read `RhinoSystemDire
 </Settings>
 ```
 
+On **macOS**, `RhinoSystemDirectory` is a Rhino `.app` bundle, not a `System` folder:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <RhinoSystemDirectory>/Applications/RhinoBETA.app</RhinoSystemDirectory>
+</Settings>
+```
+
+Target `net10.0` for the macOS build of your test project (Rhino 9 runs on .NET 10), and note that `DYLD_LIBRARY_PATH` does not need to be set. Leaving `RhinoSystemDirectory` empty lets Rhino.Inside auto-discover an installed Rhino.
+
 When initializing Rhino, an empty headless document is created. You can disable this behaviour:
 
 ```xml

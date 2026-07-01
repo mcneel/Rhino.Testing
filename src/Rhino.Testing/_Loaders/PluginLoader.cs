@@ -91,23 +91,19 @@ namespace Rhino.Testing
 
             string rhpPath;
             PlugIns.LoadPlugInResult res = PlugIns.LoadPlugInResult.ErrorUnknown;
-            Guid rpyId = Guid.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/RhinoDLR_Python.rhp/RhinoDLR_Python.rhp");
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out rpyId);
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 rhpPath = GetRHPPath(@"Plug-ins\IronPython\RhinoDLR_Python.rhp");
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out rpyId);
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
             }
 
-            if (Guid.Empty == rpyId)
-            {
-                throw new RhinoInsideInitializationException("Failed loading legacy ironpython plugin (missing plugin id)");
-            }
-
+            // On macOS, validated plugins may already be loaded during core startup, so LoadPlugIn
+            // reports Success with no plugin id - gate on the result, not the id.
             if (PlugIns.LoadPlugInResult.Success != res)
             {
                 throw new RhinoInsideInitializationException("Failed loading legacy ironpython plugin");
@@ -132,24 +128,20 @@ namespace Rhino.Testing
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
             }
 
-            if (Guid.Empty == ghId)
-            {
-                throw new RhinoInsideInitializationException("Failed loading grasshopper plugin (missing plugin id)");
-            }
-
-            if (PlugIns.LoadPlugInResult.Success == res)
-            {
-                object ghObj = RhinoApp.GetPlugInObject(ghId) ?? throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
-
-                if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
-                    runHeadLess.Invoke(ghObj, null);
-                else
-                    throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");
-            }
-            else
+            if (PlugIns.LoadPlugInResult.Success != res)
             {
                 throw new RhinoInsideInitializationException("Failed loading grasshopper plugin");
             }
+
+            object ghObj = (ghId != Guid.Empty
+                                ? RhinoApp.GetPlugInObject(ghId)
+                                : RhinoApp.GetPlugInObject("Grasshopper"))
+                           ?? throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
+
+            if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
+                runHeadLess.Invoke(ghObj, null);
+            else
+                throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");
         }
 
         public static void LoadGrasshopper2()
@@ -158,22 +150,16 @@ namespace Rhino.Testing
 
             string rhpPath;
             PlugIns.LoadPlugInResult res = PlugIns.LoadPlugInResult.ErrorUnknown;
-            Guid gh2Id = Guid.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 rhpPath = GetRHPPath("RhCore.framework/Versions/A/Resources/ManagedPlugIns/Grasshopper2Plugin.rhp/Grasshopper2Plugin.rhp");
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out gh2Id);
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 string target = GetTargetFrameworkTag();
                 rhpPath = GetRHPPath($@"Plug-ins\Grasshopper2\{target}\Grasshopper2Plugin.rhp");
-                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out gh2Id);
-            }
-
-            if (Guid.Empty == gh2Id)
-            {
-                throw new RhinoInsideInitializationException("Failed loading grasshopper 2 plugin (missing plugin id)");
+                res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out Guid _);
             }
 
             if (PlugIns.LoadPlugInResult.Success == res)

@@ -1,5 +1,9 @@
 # Change Log
 
+## [9.0.9-beta] - 2026-06-30
+- macOS: fix loading Grasshopper, Grasshopper 2, and legacy IronPython plugins (they are pre-loaded during core startup, so `PlugIn.LoadPlugIn` returns Success with no plugin id; gate on the result instead of the id)
+- macOS: initialize Eto via `Eto.Platform.Detect` instead of a hardcoded WPF platform
+
 ## [9.0.8-beta] - 2026-04-13
 - Allow Rhino.Inside to find Rhino when RhinoSystemDir is not set in the config file
 
