@@ -145,6 +145,7 @@ namespace Rhino.Testing
             if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
                 runHeadLess.Invoke(ghObj, null);
             else
+                throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");
         }
 
         public static void LoadGrasshopper2()
