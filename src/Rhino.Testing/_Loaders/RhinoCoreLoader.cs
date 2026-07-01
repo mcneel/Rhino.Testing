@@ -58,7 +58,7 @@ namespace Rhino.Testing
             TestContext.WriteLine("Loading eto platform");
 
             Eto.Platform.AllowReinitialize = true;
-            Eto.Platform.Initialize(Eto.Platforms.Wpf);
+            Eto.Platform.Initialize(Eto.Platform.Detect);
         }
 
         public static void DisposeCore()
