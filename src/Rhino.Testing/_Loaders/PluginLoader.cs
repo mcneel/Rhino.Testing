@@ -132,24 +132,19 @@ namespace Rhino.Testing
                 res = PlugIns.PlugIn.LoadPlugIn(rhpPath, out ghId);
             }
 
-            if (Guid.Empty == ghId)
-            {
-                throw new RhinoInsideInitializationException("Failed loading grasshopper plugin (missing plugin id)");
-            }
-
-            if (PlugIns.LoadPlugInResult.Success == res)
-            {
-                object ghObj = RhinoApp.GetPlugInObject(ghId) ?? throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
-
-                if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
-                    runHeadLess.Invoke(ghObj, null);
-                else
-                    throw new RhinoInsideInitializationException("Failed loading grasshopper (Headless)");
-            }
-            else
+            if (PlugIns.LoadPlugInResult.Success != res)
             {
                 throw new RhinoInsideInitializationException("Failed loading grasshopper plugin");
             }
+
+            object ghObj = (ghId != Guid.Empty
+                                ? RhinoApp.GetPlugInObject(ghId)
+                                : RhinoApp.GetPlugInObject("Grasshopper"))
+                           ?? throw new RhinoInsideInitializationException("Failed getting grasshopper plugin instance");
+
+            if (ghObj.GetType().GetMethod("RunHeadless") is MethodInfo runHeadLess)
+                runHeadLess.Invoke(ghObj, null);
+            else
         }
 
         public static void LoadGrasshopper2()
